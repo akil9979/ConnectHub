@@ -43,6 +43,7 @@ const userSchema = new Schema({
     }],
     location: {
         type: String,
+        default:"india"
     },
     gender: {
         type: String,

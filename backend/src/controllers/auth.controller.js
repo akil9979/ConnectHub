@@ -35,13 +35,14 @@ export const signUp = async (req, res) => {
         const refreshToken= await generateRefreshToken(registerUser._id)
         const options={
             httpOnly:true,
-            secure:true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
         }
 
         return res.status(200)
         .cookie("refreshToken",refreshToken,options)
         .cookie("accessToken",accessToken,options)
-        .json({ message: "user sigup succesfully",accessToken,refreshToken, registerUser })
+        .json({ message: "user sigup succesfully", registerUser })
 
     } catch (error) {
         console.log(error);
@@ -73,13 +74,14 @@ export const LogIn = async (req, res) => {
         const refreshToken= await generateRefreshToken(user._id)
         const options={
             httpOnly:true,
-            secure:true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
         }
         return res
         .status(200)
         .cookie("refreshToken",refreshToken,options)
         .cookie("accessToken",accessToken,options)
-        .json({ message: "user login succesfully", accessToken, refreshToken,user })
+        .json({ message: "user login succesfully",user })
 
     } catch (error) {
         console.log(error);
@@ -92,7 +94,7 @@ export const logOut=async(req,res)=>{
     try {
         const options={
             httpOnly:true,
-            secure:true,
+            secure: process.env.NODE_ENV === "production",
         }
         return res
         .status(200)

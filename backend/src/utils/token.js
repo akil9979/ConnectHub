@@ -5,7 +5,7 @@ const generateaccesToken=async (userId) => {
     const user= await User.findById(userId)
     return jwt.sign(
         {
-            id: user._id,
+            _id: user._id,
         },
         process.env.access_token_secret,
         {
@@ -18,7 +18,7 @@ const generateRefreshToken=async (userId) => {
     const user= await User.findById(userId)
     return jwt.sign(
         {
-            id: user._id,
+            _id: user._id,
             firstname: user.firstname,
             lastname: user.lastname,
             username: user.username,

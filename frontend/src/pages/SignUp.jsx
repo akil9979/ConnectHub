@@ -2,11 +2,15 @@ import React, {  useContext, useState } from 'react'
 import logo from '../assets/logo.svg'
 import { useNavigate } from 'react-router-dom'
 import { authdatacontext } from '../context/Authcontext'
+import { userDatacontext } from '../context/UserContext'
 import axios from 'axios'
 function SignUp() {
   let [show,setshow]=useState(false)
+  
   const navigate=useNavigate()
-  let serverURL=useContext(authdatacontext)
+ 
+  let {serverURL}=useContext(authdatacontext)
+  const {userdata, setuserdata } = useContext(userDatacontext)
   const [firstname,setfirstname]=useState("")
   const [lastname,setlastname]=useState("")
   const [username,setusername]=useState("")
@@ -18,6 +22,7 @@ function SignUp() {
   const handleSignUp=async(e)=>{
     e.preventDefault()
     setloading(true)
+    seterror("")
     try {
       let result= await axios.post(serverURL+"/api/v1/auth/signUp",{
         firstname,
@@ -28,6 +33,9 @@ function SignUp() {
         {withCredentials:true}
       )
       console.log(result);
+      setuserdata(result.data.registerUser)
+      
+      navigate("/")
       setloading(false)
       seterror("")
       setfirstname("")

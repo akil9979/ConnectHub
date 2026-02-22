@@ -4,12 +4,21 @@ import './index.css'
 import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 import Authcontext from './context/Authcontext.jsx'
+import UserContext from './context/UserContext.jsx'
+import './config/axios.js'
+
+
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
-    <Authcontext>
-      <App />
-      </Authcontext>
+ 
+  <Authcontext>
+      <UserContext>
+       <App />
+      </UserContext>
+      
+    </Authcontext>
+      
   </BrowserRouter>
 
 )
