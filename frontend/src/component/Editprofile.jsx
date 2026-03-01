@@ -129,7 +129,7 @@ function Editprofile() {
         <div className='w-full h-[100vh] fixed top-0  z-100 flex justify-center items-center'>
             <input type="file" accept="imag/*" hidden ref={profileImage} onChange={handleprofileImage} />
             <input type="file" accept="imag/*" hidden ref={coverImage} onChange={handlecoverImage}/>
-            <div className='w-full h-full bg-black opacity-[0.5] absolute'></div>
+            <div className='w-full h-full bg-black opacity-[0.5] absolute top-0 left-0'></div>
             <div className='w-[90%] max-w-[500px] h-[550px] bg-white z-200 relative shadow-lg rounded-lg p-[20px] overflow-auto'>
                 <div className='absolute right-[10px] top-3 '>
                     <RxCross1 className='h-[20px] w-[20px] text-gray-800 font-bold cursor-pointer' onClick={() => setedit(false)} />

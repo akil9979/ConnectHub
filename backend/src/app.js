@@ -15,6 +15,7 @@ import authRoute from "./routes/auth.route.js";
 app.use("/api/v1/auth", authRoute);
 import userroute from "./routes/user.routes.js"
 app.use("/api/v1/user",userroute)
-
+import postroute from "./routes/post.routes.js"
+app.use("/api/v1/post",postroute)
 
 export {app} 

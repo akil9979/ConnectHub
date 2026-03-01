@@ -7,6 +7,7 @@ function UserContext({children}) {
     const [userdata,setuserdata]=useState(null)
     const [edit,setedit]=useState(false)
     const {serverURL}=useContext(authdatacontext)
+    const [postdata,setpostdata]=useState([])
 
     const getcurrentuser= async () => {
        try {
@@ -21,24 +22,28 @@ function UserContext({children}) {
         }
       }
     }
-    
-    useEffect(() => {
-      const fetchUser = async () => {
-        if (!userdata) {
-          try {
-            await getcurrentuser()
-          } catch (error) {
-            console.log("Could not fetch current user on mount");
-          }
-        }
+    const getPost=async () => {
+      try {
+        const result =await axios.get(serverURL+"/api/v1/post/getPost",{withCredentials:true})
+        console.log(result);
+        setpostdata(result.data.post)
+      } catch (error) {
+        console.log(error);
+        
       }
-      fetchUser()
+    }
+    useEffect(() => {
+      
+           getcurrentuser()
+           getPost()
+        
     }, []);
     const value = {
       userdata,
       setuserdata,
       edit,
       setedit,
+      postdata,setpostdata
     };
     return (
       <userDatacontext.Provider value={value}>
