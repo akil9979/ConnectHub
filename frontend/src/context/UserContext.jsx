@@ -43,7 +43,7 @@ function UserContext({children}) {
       setuserdata,
       edit,
       setedit,
-      postdata,setpostdata
+      postdata,setpostdata,getPost
     };
     return (
       <userDatacontext.Provider value={value}>
