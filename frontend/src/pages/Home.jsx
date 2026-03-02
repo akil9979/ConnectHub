@@ -61,11 +61,26 @@ function Home() {
         <div className='w-[20px] h-[20px] bg-[#17c1ff] cursor-pointer absolute top-[95px] left-[90px] rounded-full flex justify-center items-center'>
           <FiPlus className='text-white' onClick={() => setedit(true)} />
         </div>
-        <div className='mt-5 p-3'>
+          <div className='mt-5 p-3'>
           <div className='text-gray-700 font-semibold text-[20px]'>{`${userdata?.firstname} ${userdata?.lastname}`}</div>
 
           <div className='text-gray-500 text-[16px]'>{userdata.headline}</div>
           <div className='text-gray-500 text-[16px]'>{userdata.location}</div>
+
+          {userdata?.projects?.length > 0 && (
+            <div className='mt-4'>
+              <h2 className='text-gray-700 font-semibold text-[17px] mb-2'>Projects</h2>
+              {userdata.projects.map((project, index) => (
+                <div key={index} className='mb-3 border-b border-gray-200 pb-2'>
+                  <div className='text-gray-800 font-semibold text-[15px]'>{project.title}</div>
+                  <div className='text-gray-600 text-[14px] mt-1'>{project.description}</div>
+                  {project.link && (
+                    <a href={project.link} target='_blank' rel='noreferrer' className='text-[#2dc0ff] text-[13px] underline break-all'>{project.link}</a>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
 
           <button className=' w-[100%] h-[40px] rounded-full border-2 border-[#2dc0ff] cursor-pointer text-[#2dc0ff] my-[20px] flex justify-center items-center gap-3' onClick={() => setedit(true)}>Edit profile  <HiPencil /> </button>
         </div>

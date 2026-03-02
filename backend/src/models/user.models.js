@@ -54,6 +54,11 @@ const userSchema = new Schema({
         company: { type: String },
         description: { type: String },
     }],
+    projects: [{
+        title: { type: String },
+        description: { type: String },
+        link: { type: String },
+    }],
     connections: [
         {
             type: mongoose.Schema.Types.ObjectId,

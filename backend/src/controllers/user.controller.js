@@ -21,6 +21,7 @@ export const updateProfile=async(req,res)=>{
         let skills=req.body.skills?JSON.parse(req.body.skills):[]
         let education=req.body.educations?JSON.parse(req.body.educations):[]
         let experience=req.body.experience?JSON.parse(req.body.experience):[]
+        let projects=req.body.projects?JSON.parse(req.body.projects):[]
         let profileImage
         let coverImage
         console.log(req.files);
@@ -33,7 +34,7 @@ export const updateProfile=async(req,res)=>{
         }
 
         const user= await User.findByIdAndUpdate(req.user._id,{
-            firstname,lastname,headline,username,location,gender,skills,education,experience,
+            firstname,lastname,headline,username,location,gender,skills,education,experience,projects,
             profileImage,coverImage
         },{new:true}).select("-password")
 

@@ -33,6 +33,12 @@ function Editprofile() {
         company: "",
         description: ""
     })
+    const [projects, setprojects] = useState(userdata?.projects || [])
+    const [newproject, setnewproject] = useState({
+        title: "",
+        description: "",
+        link: ""
+    })
     const [frontendProfileImage, setfrontendProfileImage] = useState(userdata?.profileImage||profile)
     const [backendProfileImage, setbackendProfileImage] = useState(null)
     const [frontendCoverImage, setfrontendCoverImage] = useState(userdata?.coverImage||null)    
@@ -83,6 +89,22 @@ function Editprofile() {
             setexperiences(experiences.filter((s) => s != experience))
         }
     }
+    const addproject = (e) => {
+        e.preventDefault()
+        if (newproject.title && !projects.includes(newproject)) {
+            setprojects([...projects, newproject])
+        }
+        setnewproject({
+            title: "",
+            description: "",
+            link: ""
+        })
+    }
+    function removeproject(project) {
+        if (projects.includes(project)) {
+            setprojects(projects.filter((p) => p != project))
+        }
+    }
     function handleprofileImage(e) {
         const file = e.target.files[0]
         setbackendProfileImage(file)
@@ -108,6 +130,7 @@ function Editprofile() {
             formData.append("skills", JSON.stringify(skills))
             formData.append("educations", JSON.stringify(educations))
             formData.append("experience", JSON.stringify(experiences))
+            formData.append("projects", JSON.stringify(projects))
             if (backendProfileImage) {
                 formData.append("profileImage",backendProfileImage)
             }
@@ -208,6 +231,27 @@ function Editprofile() {
                             <button onClick={addexperience} className='w-[100%] h-[40px] rounded-full border-2 border-[#2dc0ff] cursor-pointer text-[#2dc0ff]'>Add</button>
                         </div>
                 
+                    </div>
+                    <div className='w-full p-[10px] border-2 border-gray-600 flex flex-col gap-[10px] rounded-lg'>
+                        <h1 className='text-[19px] font-semibold'>Projects</h1>
+                        {projects && <div className='flex flex-col gap-3 '>
+                            {projects.map((project, index) => (
+                                <div className='w-full border-[1px] border-gray-600 bg-gray-200 flex  justify-between items-center  px-[10px] py-[5px]' key={index}>
+                                    <div>
+                                        <span>Title : {project.title}</span>
+                                        <div>Description : {project.description}</div>
+                                        <div>Link : {project.link}</div>
+                                    </div>
+                                    <RxCross1 className='h-[20px] w-[20px] text-gray-800 font-bold cursor-pointer' onClick={() => removeproject(project)} />
+                                </div>
+                            ))}
+                        </div>}
+                        <div className='flex flex-col gap-[10px] items-start' >
+                            <input type="text" placeholder='title' value={newproject.title} onChange={(e) => setnewproject({ ...newproject, title: e.target.value })} className='w-full h-[45px] outline-none border-2 rounded-lg brder-gray-500 px-[10px] py-[5px] text-[16px]' />
+                            <textarea placeholder='description' value={newproject.description} onChange={(e) => setnewproject({ ...newproject, description: e.target.value })} className='w-full outline-none border-2 rounded-lg brder-gray-500 px-[10px] py-[5px] text-[16px] resize-none h-[80px]' />
+                            <input type="text" placeholder='link (optional)' value={newproject.link} onChange={(e) => setnewproject({ ...newproject, link: e.target.value })} className='w-full h-[45px] outline-none border-2 rounded-lg brder-gray-500 px-[10px] py-[5px] text-[16px]' />
+                            <button onClick={addproject} className='w-[100%] h-[40px] rounded-full border-2 border-[#2dc0ff] cursor-pointer text-[#2dc0ff]'>Add</button>
+                        </div>
                     </div>
                     <button className='w-[100%] h-[50px] rounded-full bg-[#24b2ff] text-white cursor-pointer 'disabled={saving}  onClick={handleSaveProfile} >{saving?"saving...":"Save profile"}</button>
                 </div>
