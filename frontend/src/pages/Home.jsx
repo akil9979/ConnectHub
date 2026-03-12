@@ -37,7 +37,8 @@ function Home() {
         formData.append("image", backendImage)
       }
       const result = await axios.post(serverURL + "/api/v1/post/createPost", formData, { withCredentials: true })
-      console.log(result);
+      
+      
       setposting(false)
       setuploadPost(false)
     } catch (error) {

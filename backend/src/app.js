@@ -1,7 +1,10 @@
 import express, { urlencoded } from "express";
 import cookieparser from "cookie-parser";
 import cors from "cors";
+
 const app = express();
+
+
 app.use(express.json());
 app.use(cookieparser());
 app.use(express.static("public"));
@@ -17,5 +20,7 @@ import userroute from "./routes/user.routes.js"
 app.use("/api/v1/user",userroute)
 import postroute from "./routes/post.routes.js"
 app.use("/api/v1/post",postroute)
+import connectionroute from "./routes/connection.routes.js"
+app.use("/api/v1/connection",connectionroute)
 
 export {app} 

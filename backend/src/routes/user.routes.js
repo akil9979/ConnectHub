@@ -1,6 +1,6 @@
 import {auth} from "../middlewares/auth.mmiddleware.js";
 import { Router } from "express";
-import {currentUser, updateProfile} from "../controllers/user.controller.js"
+import {currentUser, getProfile, updateProfile} from "../controllers/user.controller.js"
 import upload from "../middlewares/multer.js";
 
 
@@ -11,5 +11,6 @@ router.put("/updateprofile",auth,upload.fields([
     {name:"profileImage",maxCount:1},
     {name:"coverImage",maxCount:1}
 ]),updateProfile)
+router.get("/getprofile/:username",auth,getProfile)
 
 export default router

@@ -8,11 +8,15 @@ import { authdatacontext } from '../context/AuthContext';
 import { userDatacontext } from '../context/UserContext';
 import { AiFillLike } from "react-icons/ai";
 import { LuSendHorizontal } from "react-icons/lu";
+import socket from '../socket';
+
+import ConnectionButton from './ConnectionButton';
+
 
 function Post({ id, description, image, like, comment, author, createdAt }) {
   const [more, setmore] = useState(false)
   let { serverURL } = useContext(authdatacontext)
-  const { userdata, getPost } = useContext(userDatacontext)
+  const { userdata, getPost,handleGetProfile } = useContext(userDatacontext)
   const [likes, setlikes] = useState(like || [])
   const [commentContent, setcommentContent] = useState("")
   const [comments, setcomments] = useState(comment || [])
@@ -21,7 +25,8 @@ function Post({ id, description, image, like, comment, author, createdAt }) {
     try {
       const result = await axios.get(serverURL + `/api/v1/post/like/${id}`, { withCredentials: true })
       setlikes(result.data.post.likes)
-
+      
+      
 
     } catch (error) {
       console.log("error in fetching", error);
@@ -47,12 +52,32 @@ function Post({ id, description, image, like, comment, author, createdAt }) {
   }
   useEffect(() => {
     getPost()
-  }, [likes,setlikes,comments,setcomments])
+  }, [])
+  useEffect(()=>{
+    socket.on("likeUpdated",(data)=>{
+      if (data.postId===id) {
+        setlikes(data.likes)
+      }
+    })
+    return()=>{
+      socket.off("likeUpdated")
+    }
+  },[id])
+  useEffect(()=>{
+    socket.on("commentUpdated",(data)=>{
+      if (data.postId===id) {
+        setcomments(data.comments)
+      }
+    })
+    return()=>{
+      socket.off("commentUpdated")
+    }
+  },[id])
   return (
     <div className='w-full min-h-[200px] bg-white rounded-lg shadow-lg p-[20px] gap-[10px] flex flex-col'>
       <div className='flex justify-between items-center'>
         <div className='flex gap-[10px]'>
-          <div className='w-[70px] h-[70px] rounded-full flex justify-center items-center overflow-hidden  cursor-pointer'>
+          <div className='w-[70px] h-[70px] rounded-full flex justify-center items-center overflow-hidden  cursor-pointer' onClick={()=>handleGetProfile(author.username)}>
             <img src={author.profileImage || profile} alt="" className='w-full  h-full' />
           </div>
           <div>
@@ -62,7 +87,8 @@ function Post({ id, description, image, like, comment, author, createdAt }) {
           </div>
         </div>
         <div>
-          {/* button */}
+          {author._id !== userdata._id &&  <ConnectionButton userId={author._id}/>}
+         
         </div>
       </div>
       <div className={`w-full ${!more ? "max-h-[100px] overflow-hidden" : "h-full"} pl-[50px]  `}>{description}</div>
@@ -94,7 +120,7 @@ function Post({ id, description, image, like, comment, author, createdAt }) {
         <div>
           <form className='flex relative' onSubmit={handleComment}>
             <input type="text" placeholder='write a comment...' onChange={(e) => setcommentContent(e.target.value)} value={commentContent} className=' w-full h-[40px] rounded-full border-2 border-gray-300 px-[20px] pr-[50px]' />
-            <button className='absolute right-[22px] top-[10px] '> <LuSendHorizontal className='text-[#07a4ff] w-[22px] h-[22px]' /></button>
+            <button className='absolute right-[22px] top-[10px] '> <LuSendHorizontal className='text-[#07a4ff] w-[22px] h-[22px] cursor-pointer' /></button>
           </form>
 
         </div>
