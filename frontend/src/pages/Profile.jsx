@@ -9,30 +9,21 @@ import Editprofile from '../component/Editprofile';
 import axios from 'axios';
 import { authdatacontext } from '../context/Authcontext';
 import Post from '../component/Post';
+import ConnectionButton from '../component/ConnectionButton';
 
 
 function Profile() {
     const { userdata, setuserdata, edit, setedit, postdata, setpostdata ,profiledata,setprofiledata} = React.useContext(userDatacontext)
-    const [userConnections, setuserConnections] = React.useState([])
     const { serverURL } = React.useContext(authdatacontext)
     const [profilePosts, setprofilePosts] = React.useState([])
-    const handleUserConnections = async () => {
-        try {
-            const result = await axios.get(`${serverURL}/api/v1/connection`, { withCredentials: true })
-            setuserConnections(result.data)
-            
-
-        } catch (error) {
-            console.log(error);
-        }
-    }
+   
  
 
     useEffect(() => {
         setprofilePosts(
             postdata.filter((post) => post.author._id === profiledata?._id)
           )
-    }, [postdata])
+    }, [profiledata])
 
     return (
         <div className='w-full h-ful bg-[#f0efe7] pt-[100px] flex flex-col items-center  pb-[40px]'>
@@ -59,14 +50,15 @@ function Profile() {
 
                         <div className=' text-[16px]'>{profiledata.headline}</div>
                         <div className=' text-[16px]'>{profiledata.location}</div>
-                        <div className='text-[16px]'>{profiledata?.connections.length} connections</div>
+                        <div className='text-[16px]'>{profiledata?.connections?.length} connections</div>
                         {userdata._id==profiledata._id &&  <button  className=' w-[150px] h-[40px] rounded-full border-2 border-[#2dc0ff] cursor-pointer text-[#2dc0ff] my-[20px] flex justify-center items-center gap-3' onClick={() => setedit(true)}>Edit profile  <HiPencil /> </button>}
+                        {userdata._id!=profiledata._id && <ConnectionButton userId={profiledata._id}/>}
                        
                     </div>
                 </div>
                 <div className='flex flex-col gap-[10px]'>
                     <div className='w-full  min-h-[100px] flex items-center p-[20px] text-[22px] text-gray-600 font-semibold bg-white shadow-lg rounded-lg w-full'>
-                        {`Posts (${profilePosts.length})`}
+                        {`Posts (${profilePosts?.length})`}
                     </div>
                     <div >
                         {profilePosts.map((post, index) => (

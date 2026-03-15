@@ -58,3 +58,25 @@ export const getProfile=async(req,res)=>{
         return res.status(400).json({message:"get profile error"})
     }
 }
+
+export const searchUser=async(req,res)=>{
+    try {
+        const {query}=req.query
+        if(!query){
+            return res.status(400).json({message:"query is required"})
+        }
+        const users = await User.find({
+            $or:[{firstname:{$regex:query,$options:"i"}},
+                {lastname:{$regex:query,$options:"i"}},
+                {username:{$regex:query,$options:"i"}},
+                {skills:{$in:[query]}},
+            ]
+        })
+
+        return  res.status(200).json({message:"search user successfully",users})
+
+    } catch (error) {
+         return res.status(400).json({message:"search user error"})
+        
+    }
+}
