@@ -22,5 +22,6 @@ import postroute from "./routes/post.routes.js"
 app.use("/api/v1/post",postroute)
 import connectionroute from "./routes/connection.routes.js"
 app.use("/api/v1/connection",connectionroute)
-
+import notificationroute from "./routes/notification.route.js"
+app.use("/api/v1/notification",notificationroute)
 export {app} 

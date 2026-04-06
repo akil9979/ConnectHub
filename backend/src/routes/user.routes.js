@@ -1,6 +1,6 @@
 import {auth} from "../middlewares/auth.mmiddleware.js";
 import { Router } from "express";
-import {currentUser, getProfile, searchUser, updateProfile} from "../controllers/user.controller.js"
+import {currentUser, getProfile, getSuggestedUsers, searchUser, updateProfile} from "../controllers/user.controller.js"
 import upload from "../middlewares/multer.js";
 
 
@@ -13,4 +13,5 @@ router.put("/updateprofile",auth,upload.fields([
 ]),updateProfile)
 router.get("/getprofile/:username",auth,getProfile)
 router.get("/search",auth,searchUser)
+router.get("/suggestedUsers",auth,getSuggestedUsers)
 export default router

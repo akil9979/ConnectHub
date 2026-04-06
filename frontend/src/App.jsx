@@ -6,6 +6,7 @@ import Home from './pages/Home'
 import { userDatacontext } from './context/UserContext'
 import Network from './pages/Network'
 import Profile from './pages/Profile'
+import Notification from './pages/Notification'
 
 function App() {
   const { userdata,setuserdata } = useContext(userDatacontext);
@@ -18,6 +19,7 @@ function App() {
     <Route path='/signUp' element={userdata?<Navigate to="/"/>:<SignUp/>}/>
     <Route path='/Network' element={userdata?<Network/>:<Navigate to="/login"/>}/>
     <Route path='/profile' element={userdata?<Profile/>:<Navigate to="/login"/>}/>
+    <Route path='/Notification' element={userdata?<Notification/>:<Navigate to="/login"/>}/>
    </Routes>  
    
   )

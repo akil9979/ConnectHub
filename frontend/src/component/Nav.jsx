@@ -53,9 +53,9 @@ function Nav() {
                     <img src={logo2} alt="" className='w-[50px] cursor-pointer' />
                 </div>
                 {/* {!activesearch &&  <div className=" left-3 top-2 lg:hidden md:hidden " onClick={()=>setactivesearch(true)}><IoSearch /></div> } */}
-                {searchResults?.length > 0 &&  <div className='absolute top-[80px] min-h-[80px] shadow-lg lg:left-[20px] left-[0px] p-[20px] w-[100%] lg:w-[700px] bg-white flex flex-col gap-[20px]'>
+                {searchResults?.length > 0 &&  <div className='absolute top-[80px] min-h-[80px] h-[500px] overflow-auto shadow-lg lg:left-[20px] left-[0px] p-[20px] w-[100%] lg:w-[700px] bg-white flex flex-col gap-[20px]'>
                     {searchResults.map((sea) => (
-                        <div  onClick={() => handleGetProfile(sea?.username)} className='flex rounded-lg items-center gap-[10px] border-b-2 p-[10px] border-b-gray-500 hover:bg-gray-200 cursor-pointer' >
+                        <div  onClick={() => handleGetProfile(sea?.username)} className='flex rounded-lg items-center gap-[10px] border-b-2 p-[10px] border-b-gray-300 hover:bg-gray-200 cursor-pointer' >
                             <div className='w-[70px] h-[70px] rounded-full overflow-hidden'>
                                 <img src={sea.profileImage || profile} alt="" className='w-full  h-full' />
                             </div>
@@ -68,14 +68,14 @@ function Nav() {
                     ))}
                 </div>}
                
-                <form className="relative  ">
+                <div className="relative  ">
                     <div className={`lg:block md:block  absolute left-3 top-2 `}><IoSearch /></div>
                     <input type="text" placeholder='Search' onChange={(e) => setsearchQuery(e.target.value)} value={searchQuery} className={`lg:block md:block pl-8 w-[200px] lg:w-[300px] h-[30px] rounded-full border-2 border-gray-400 px-4`} />
-                </form>
+                </div>
             </div>
 
-            <div className='flex items-center justify-center gap-4 relative' >
-                {showPopup && <div className='w-[280px] min-h-[300px] bg-white shadow-lg absolute top-[70px] left-[100px] rounded-lg flex flex-col items-center p-[20px] gap-[20px]'>
+            <div className='flex items-center justify-center gap-4 ' >
+                {showPopup && <div className='w-[280px] min-h-[300px] bg-white shadow-lg absolute top-[75px] right-[20px] lg:right-[100px] rounded-lg flex flex-col items-center p-[20px] gap-[20px]'>
                     <div className='w-[70px] h-[70px] rounded-full overflow-hidden'>
                         <img src={userdata.profileImage || profile} alt="" className='w-full  h-full' />
                     </div>
@@ -97,7 +97,7 @@ function Nav() {
                 <div className='lg:flex flex-col items-center justify-center text-gray-600 hidden cursor-pointer' onClick={() => navigate("/Network")}><FaUserFriends className='w-[23px] h-[23px] text-gray-600' />
                     <div>My Network</div>
                 </div>
-                <div className='flex flex-col items-center justify-center text-gray-600 cursor-pointer' ><IoIosNotifications className=' w-[23px] h-[23px] text-gray-600' />
+                <div className='flex flex-col items-center justify-center text-gray-600 cursor-pointer' onClick={() => navigate("/Notification")} ><IoIosNotifications className=' w-[23px] h-[23px] text-gray-600' />
                     <div className='md:block hidden '>Notifications</div>
                 </div>
                 <div className='w-[50px] h-[50px] rounded-full overflow-hidden '>

@@ -1,3 +1,4 @@
+
 import { User } from "../models/user.models.js"
 import uploadOnCloudinary  from "../utils/cloudinary.js"
 
@@ -79,4 +80,20 @@ export const searchUser=async(req,res)=>{
          return res.status(400).json({message:"search user error"})
         
     }
+}
+
+
+export const getSuggestedUsers=async(req,res)=>{
+  try {
+    let currentUser= await User.findById(req.user._id).select("connections")
+    let getSuggestedUsers=await User.find({
+        _id:{
+            $ne:currentUser,$nin:currentUser.connections
+        }
+        
+    }).select("-password")
+    return res.status(200).json({message:"suggested users get successfully",getSuggestedUsers})
+  } catch (error) {
+    return res.status(400).json({message:"get suggested users error"})
+  }
 }

@@ -48,10 +48,10 @@ function Network() {
   return (
     <div className='w-screen h-[100vh] bg-[#f0efe7] pt-[100px] flex flex-col items-center  gap-[40px]'>
       <Nav />
-      <div className='w-full  h-[100px] bg-[white] shadow-lg rounded-lg flex items-center p-[10px] text-[22px] text-gray-600'>
-        Request{requests.length}
+      <div className='w-[90%] max-w-[600px] h-[70px] bg-[white] shadow-lg rounded-lg flex items-center p-[10px] text-[22px] text-gray-600'>
+        Request {requests.length}
       </div>
-      {requests.length>0 &&   <div className='min-h-[100px] w-[100%] max-w-[900px] shadow-lg rounded-lg flex flex-col gap-[20px] bg-white'>
+      {requests.length>0 &&   <div className='min-h-[70px] w-[90%] max-w-[600px] shadow-lg rounded-lg flex flex-col gap-[20px] bg-white'>
         {requests.map((request, index) => (
           <div className='w-full min flex items-center justify-between gap-[10px] p-[20px]'>
             <div className='flex justify-center items-center gap-[10px]'>
