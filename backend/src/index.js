@@ -7,7 +7,7 @@ dotenv.config({});
 const server = http.createServer(app); 
 export const io= new Server(server,{
     cors:({
-        origin: "https://connecthub-frontend-00l6.onrender.com",
+        origin: "https://connecthub-frontend-006.onrender.com",
         credentials: true,
     })
 })
