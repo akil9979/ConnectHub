@@ -9,7 +9,7 @@ import Editprofile from '../component/Editprofile';
 import { RxCross1 } from "react-icons/rx";
 import { FaRegImage } from "react-icons/fa6";
 import axios from 'axios';
-import { authdatacontext } from "../context/Authcontext"
+import { authdatacontext } from "../context/AuthContext"
 import Post from '../component/Post';
 
 function Home() {

@@ -5,7 +5,7 @@ import profile from '../assets/profile.webp'
 import { FiPlus } from "react-icons/fi";
 import { MdOutlineCameraAlt } from "react-icons/md";
 import axios from 'axios';
-import { authdatacontext } from '../context/Authcontext';
+import { authdatacontext } from '../context/AuthContext';
 ;
 
 

@@ -7,7 +7,7 @@ import { HiUserGroup } from "react-icons/hi";
 import { IoIosNotifications } from "react-icons/io";
 import profile from '../assets/profile.webp'
 import { userDatacontext } from '../context/UserContext';
-import { authdatacontext } from '../context/Authcontext';
+import { authdatacontext } from '../context/AuthContext';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 

@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
-import { authdatacontext } from './Authcontext'
+import { authdatacontext } from './AuthContext'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
  export const userDatacontext=React.createContext()

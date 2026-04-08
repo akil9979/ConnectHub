@@ -7,7 +7,7 @@ import { userDatacontext } from '../context/UserContext'
 import { HiPencil } from "react-icons/hi2";
 import Editprofile from '../component/Editprofile';
 import axios from 'axios';
-import { authdatacontext } from '../context/Authcontext';
+import { authdatacontext } from '../context/AuthContext';
 import Post from '../component/Post';
 import ConnectionButton from '../component/ConnectionButton';
 
