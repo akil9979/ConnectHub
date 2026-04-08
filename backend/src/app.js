@@ -10,7 +10,7 @@ app.use(cookieparser());
 app.use(express.static("public"));
 app.use(urlencoded({ extended: true }));
 app.use(cors({
-    origin: "https://connecthub-frontend-006.onrender.com",
+    origin: "https://connecthub-frontend-0016.onrender.com",
     credentials: true,
 }));
 app.use(express.urlencoded({ extended: true }));
