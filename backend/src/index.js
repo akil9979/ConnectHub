@@ -5,11 +5,15 @@ import http  from "http";
 import { Server } from "socket.io";                    
 dotenv.config({});
 const server = http.createServer(app); 
-export const io= new Server(server,{
-    cors:({
-        origin: "https://connecthub-frontend-006.onrender.com",
-        credentials: true,
-    })
+export const io = new Server(server,{
+  cors:{
+    origin:[
+      "http://localhost:5173",
+      "https://connecthub-frontend-006.onrender.com",
+      "https://connecthub-frontend-0016.onrender.com"
+    ],
+    credentials:true
+  }
 })
 export const userSocketMap=new Map()
 io.on("connection",(socket)=>{
