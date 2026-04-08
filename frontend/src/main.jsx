@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
-import Authcontext from './context/Authcontext.jsx'
+import Authcontext from './context/AuthContext.jsx'
 import UserContext from './context/UserContext.jsx'
 import './config/axios.js'
 
