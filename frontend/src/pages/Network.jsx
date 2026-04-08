@@ -1,7 +1,7 @@
 import React, { use } from 'react'
 import Nav from '../component/Nav'
 import axios from 'axios'
-import { authdatacontext } from '../context/Authcontext'
+import { authdatacontext } from '../context/AuthContext.jsx'
 import { useEffect } from 'react'
 import profile from '../assets/profile.webp'
 import { userDatacontext } from '../context/UserContext'
