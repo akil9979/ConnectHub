@@ -41,7 +41,7 @@ function Notification() {
     }, [])
 
     return (
-        <div className='w-screen min-h-[100vh] bg-[#f0efe7] pt-[100px] flex flex-col items-center'>
+        <div className='w-screen min-h-[100vh] bg-[#F3F4F6] pt-[100px] flex flex-col items-center'>
             <Nav />
 
             

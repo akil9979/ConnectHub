@@ -46,7 +46,7 @@ function Network() {
   }, [])
 
   return (
-    <div className='w-screen h-[100vh] bg-[#f0efe7] pt-[100px] flex flex-col items-center  gap-[40px]'>
+    <div className='w-screen h-[100vh] bg-[#F3F4F6] pt-[100px] flex flex-col items-center  gap-[40px]'>
       <Nav />
       <div className='w-[90%] max-w-[600px] h-[70px] bg-[white] shadow-lg rounded-lg flex items-center p-[10px] text-[22px] text-gray-600'>
         Request {requests.length}

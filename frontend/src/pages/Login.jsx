@@ -40,13 +40,16 @@ function Login() {
     }
   }
   return (
-    <div>
-      <div className='w-full max-w-24 h-10 m-8'>
-        <img src={logo} alt="" />
+    <div className=' bg-[#18181B]'>
+      <div className='w-full max-w-24 h-10  m-8'>
+        {/* <img src={logo} alt="" /> */}
+        <h1 className="text-xl font-bold text-[#FAFAFA] ">
+          ConnectHub
+        </h1>
       </div>
-      <div className='w-full h-screen bg-[white] flex flex-col items-center justify-start'>
+      <div className='w-full h-screen bg-[#18181B] flex flex-col items-center justify-start'>
 
-        <form action="" onSubmit={handleSignin} className='w-xs h-full max-h-110 shadow-xl flex flex-col p-5 justify-center gap-3' >
+        <form action="" onSubmit={handleSignin} className='bg-white w-xs h-full max-h-110 rounded-lg shadow-xl flex flex-col p-5 justify-center gap-3' >
           <h1 className='font-semibold text-[30px] text-gray-800 mb-3'>Sign In</h1>
 
           <input
