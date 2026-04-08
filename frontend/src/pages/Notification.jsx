@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import Nav from "../component/Nav"
-import { authdatacontext } from '../context/Authcontext'
+import { authdatacontext } from '../context/AuthContext.jsx'
 import axios from 'axios'
 import profile from '../assets/profile.webp'
 import { RxCross1 } from "react-icons/rx";
