@@ -12,6 +12,7 @@ export const io = new Server(server,{
       "https://connecthub-frontend-006.onrender.com",
       "https://connecthub-frontend-0016.onrender.com"
     ],
+    methods:["GET","POST"],
     credentials:true
   }
 })
