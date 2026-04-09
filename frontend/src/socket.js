@@ -1,7 +1,7 @@
 
 import { io } from "socket.io-client";
 
-const SOCKET_URL = "https://connecthub-backend-wweb.onrender.com";
+const SOCKET_URL = "https://connecthub-backend-web.onrender.com";
 
 
 const socket = io(SOCKET_URL, {
