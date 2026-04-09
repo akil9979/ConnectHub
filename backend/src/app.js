@@ -19,7 +19,7 @@ app.use(cors({
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], 
   optionsSuccessStatus: 200 
 }));
-app.options("*", cors());
+app.options(/.*/, cors());
 app.use(express.urlencoded({ extended: true }));
 import authRoute from "./routes/auth.route.js";
 app.use("/api/v1/auth", authRoute);
