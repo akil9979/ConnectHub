@@ -7,7 +7,7 @@ const SOCKET_URL = "https://connecthub-backend-wweb.onrender.com";
 const socket = io(SOCKET_URL, {
   withCredentials: true,
   autoConnect: true,
-  transports:["websocket","polling"]
+   transports: ["polling", "websocket"],
 });
 
 export default socket;
