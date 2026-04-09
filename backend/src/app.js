@@ -4,28 +4,13 @@ import cors from "cors";
 
 const app = express();
 
-const corsOptions = {
-  origin: function (origin, callback) {
-    const allowedOrigins = [
-      "http://localhost:5173",
-      "https://connecthub-frontend-006.onrender.com",
-      "https://connecthub-frontend-0016.onrender.com"
-    ];
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
-  optionsSuccessStatus: 204
-};
+app.use(cors({
+  origin: true,
+  credentials: true
+}));
 
 
-app.use(cors(corsOptions));
-app.options(/.*/, cors(corsOptions));
+
 
 app.use(express.json());
 app.use(cookieparser());
