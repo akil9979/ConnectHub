@@ -2,7 +2,8 @@ import { app } from "./app.js";
 import dotenv from "dotenv";
 import connectDB from "./DB/connectdb.js";
 import http  from "http";  
-import { Server } from "socket.io";                    
+import { Server } from "socket.io";    
+import cors from "cors";
 dotenv.config({});
 const server = http.createServer(app); 
 export const io = new Server(server,{
