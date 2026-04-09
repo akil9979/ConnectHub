@@ -15,8 +15,11 @@ app.use(cors({
     "https://connecthub-frontend-006.onrender.com",
     "https://connecthub-frontend-0016.onrender.com"
   ],
-  credentials: true
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], 
+  optionsSuccessStatus: 200 
 }));
+app.options("*", cors());
 app.use(express.urlencoded({ extended: true }));
 import authRoute from "./routes/auth.route.js";
 app.use("/api/v1/auth", authRoute);

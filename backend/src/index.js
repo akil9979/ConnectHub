@@ -6,17 +6,18 @@ import { Server } from "socket.io";
 import cors from "cors";
 dotenv.config({});
 const server = http.createServer(app); 
-export const io = new Server(server,{
-  cors:{
-    origin:[
+export const io = new Server(server, {
+  cors: {
+    origin: [
       "http://localhost:5173",
       "https://connecthub-frontend-006.onrender.com",
       "https://connecthub-frontend-0016.onrender.com"
     ],
-    methods:["GET","POST"],
-    credentials:true
-  }
-})
+    methods: ["GET", "POST"],
+    credentials: true
+  },
+  allowEIO3: true // ← add this
+});
 export const userSocketMap=new Map()
 io.on("connection",(socket)=>{
     
