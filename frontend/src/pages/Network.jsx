@@ -46,24 +46,24 @@ function Network() {
   }, [])
 
   return (
-    <div className='w-screen h-[100vh] bg-[#F3F4F6] pt-[100px] flex flex-col items-center  gap-[40px]'>
+    <div className='w-screen min-h-screen bg-gray-50 pt-24 flex flex-col items-center gap-6 px-4 pb-10'>
       <Nav />
-      <div className='w-[90%] max-w-[600px] h-[70px] bg-[white] shadow-lg rounded-lg flex items-center p-[10px] text-[22px] text-gray-600'>
+      <div className='w-full max-w-[600px] min-h-[70px] bg-white shadow-md border border-gray-100 rounded-xl flex items-center p-6 text-lg font-semibold text-gray-900 mb-2'>
         Request {requests.length}
       </div>
-      {requests.length>0 &&   <div className='min-h-[70px] w-[90%] max-w-[600px] shadow-lg rounded-lg flex flex-col gap-[20px] bg-white'>
+      {requests.length>0 &&   <div className='min-h-[70px] w-full max-w-[600px] shadow-md border border-gray-100 rounded-xl flex flex-col gap-0 bg-white overflow-hidden'>
         {requests.map((request, index) => (
-          <div className='w-full min flex items-center justify-between gap-[10px] p-[20px]'>
-            <div className='flex justify-center items-center gap-[10px]'>
-            <div className='w-[60px] h-[60px] rounded-full flex justify-center items-center overflow-hidden  cursor-pointer'>
-              <img src={request.sender.profileImage || profile} alt="" className='w-full  h-full' />
+          <div className='w-full min flex items-center justify-between gap-4 p-6 border-b border-gray-100 last:border-0'>
+            <div className='flex justify-center items-center gap-3 min-w-0'>
+            <div className='w-[60px] h-[60px] rounded-full flex justify-center items-center overflow-hidden cursor-pointer ring-2 ring-gray-100 flex-shrink-0'>
+              <img src={request.sender.profileImage || profile} alt="" className='w-full h-full object-cover' />
             </div>
             
-            <div className='text-gray-600 font-semibold text-[19px]'>{`${request?.sender.firstname} ${request?.sender.lastname}`}</div>
+            <div className='text-gray-900 font-semibold text-base truncate'>{`${request?.sender.firstname} ${request?.sender.lastname}`}</div>
             </div>
-            <div>
-              <button className='w-[100px] h-[35px] rounded-full border-2 border-[#2dc0ff] cursor-pointer text-[#2dc0ff] mr-2' onClick={()=>handleAcceptRequest(request._id)}>Accept</button>
-              <button className='w-[100px] h-[35px] rounded-full border-2 border-red-400 cursor-pointer text-red-400'onClick={()=>handleRejectRequest(request._id)}>Reject</button>
+            <div className='flex gap-2 flex-shrink-0'>
+              <button className='min-w-[100px] h-9 px-3 rounded-xl border border-blue-600 text-blue-600 shadow-sm hover:bg-blue-600 hover:text-white cursor-pointer text-sm font-medium transition-all duration-200' onClick={()=>handleAcceptRequest(request._id)}>Accept</button>
+              <button className='min-w-[100px] h-9 px-3 rounded-xl border border-red-200 text-red-600 shadow-sm hover:bg-red-50 cursor-pointer text-sm font-medium transition-all duration-200'onClick={()=>handleRejectRequest(request._id)}>Reject</button>
             </div>
           </div>
         ))}

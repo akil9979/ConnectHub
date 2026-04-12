@@ -74,70 +74,70 @@ function Post({ id, description, image, like, comment, author, createdAt }) {
     }
   }, [id])
   return (
-    <div className='w-full min-h-[200px] bg-white rounded-lg shadow-lg p-[20px] gap-[10px] flex flex-col'>
-      <div className='flex justify-between items-center'>
-        <div className='flex gap-[10px]'>
-          <div className='w-[70px] h-[70px] rounded-full flex justify-center items-center overflow-hidden  cursor-pointer' onClick={() => handleGetProfile(author.username)}>
-            <img src={author.profileImage || profile} alt="" className='w-full  h-full' />
+    <div className='w-full min-h-[200px] bg-white rounded-xl shadow-md border border-gray-100 p-6 gap-4 flex flex-col mb-6'>
+      <div className='flex justify-between items-start gap-4'>
+        <div className='flex gap-3 min-w-0'>
+          <div className='w-[70px] h-[70px] rounded-full flex justify-center items-center overflow-hidden cursor-pointer ring-2 ring-gray-100 flex-shrink-0' onClick={() => handleGetProfile(author.username)}>
+            <img src={author.profileImage || profile} alt="" className='w-full h-full object-cover' />
           </div>
-          <div>
-            <div className='text-gray-700 font-semibold text-[22px]'>{`${author?.firstname} ${author?.lastname}`}</div>
-            <div className='text-gray-700 font-semibold text-[16px]'>{`${author?.headline} `}</div>
-            <div className='text-gray-700 font-semibold text-[16px]'>{`${moment(createdAt).fromNow()} `}</div>
+          <div className='min-w-0'>
+            <div className='text-gray-900 font-semibold text-lg truncate'>{`${author?.firstname} ${author?.lastname}`}</div>
+            <div className='text-sm text-gray-500 truncate'>{`${author?.headline} `}</div>
+            <div className='text-sm text-gray-400'>{`${moment(createdAt).fromNow()} `}</div>
           </div>
         </div>
-        <div>
+        <div className='flex-shrink-0'>
           {author._id !== userdata._id && <ConnectionButton userId={author._id} />}
 
         </div>
       </div>
-      <div className={`w-full ${!more ? "max-h-[100px] overflow-hidden" : "h-full"} pl-[50px]  `}>{description}</div>
-      <div className='pl-[50px] font-semibold cursor-pointer ' onClick={() => setmore(prev => !prev)}>{!more ? "read more..." : "read less"}</div>
+      <div className={`w-full ${!more ? "max-h-[100px] overflow-hidden" : "h-full"} pl-0 md:pl-[50px] text-base text-gray-800`}>{description}</div>
+      <div className='pl-0 md:pl-[50px] text-sm font-medium text-blue-600 hover:text-indigo-600 cursor-pointer transition-colors duration-200' onClick={() => setmore(prev => !prev)}>{!more ? "read more..." : "read less"}</div>
       {image &&
-        <div className='w-full h-[300px] overflow-hidden flex justify-center rounded-lg'>
-          <img src={image} alt="" className='h-full rounded-lg' />
+        <div className='w-full h-[300px] overflow-hidden flex justify-center rounded-xl'>
+          <img src={image} alt="" className='h-full rounded-xl object-cover' />
         </div>}
 
-      <div className='pl-[50px] p-[20px] w-full flex justify-between items-center border-b-2 border-gray-500'>
-        <div className=' flex justify-center items-center gap-[5px] text-[18px]'><AiOutlineLike className='text-[#24b2ff] w-[20px] h-[20px] ' /><span>{likes.length}</span></div>
-        <div className='cursor-pointer flex justify-center items-center gap-[5px]' onClick={() => setshowComments(prev => !prev)} ><span>{comments.length}</span><span>comments</span></div>
+      <div className='pl-0 md:pl-[50px] py-4 w-full flex justify-between items-center border-b border-gray-200'>
+        <div className='flex justify-center items-center gap-2 text-base text-gray-700'><AiOutlineLike className='text-blue-600 w-5 h-5' /><span>{likes.length}</span></div>
+        <div className='cursor-pointer flex justify-center items-center gap-2 text-sm text-gray-600 hover:text-blue-600 transition-colors duration-200' onClick={() => setshowComments(prev => !prev)} ><span>{comments.length}</span><span>comments</span></div>
 
       </div>
       <div>
-        <div className='flex  items-center justify-start w-full gap-[20px] p-[20x] pl-[40px]'>
-          {!likes.includes(userdata._id) && <div className='flex justify-center items-center gap-[5px] cursor-pointer' onClick={handlelike}>
-            <div className='flex items-center ' > <AiOutlineLike className=' h-[40px] w-[30px]' /> </div>
-            <span>like</span>
+        <div className='flex flex-wrap items-center justify-start w-full gap-4 p-0 pl-0 md:pl-10'>
+          {!likes.includes(userdata._id) && <div className='flex justify-center items-center gap-2 cursor-pointer text-gray-600 hover:text-blue-600 transition-colors duration-200' onClick={handlelike}>
+            <div className='flex items-center' > <AiOutlineLike className='h-8 w-8' /> </div>
+            <span className='text-sm font-medium'>like</span>
           </div>}
-          {likes.includes(userdata._id) && <div className='flex justify-center items-center gap-[5px] cursor-pointer' onClick={handlelike}>
-            <div className='flex items-center ' > <AiFillLike className=' h-[40px] w-[30px] text-[#07a4ff] ' /> </div>
-            <span className='text-[#07a4ff]'>liked</span>
+          {likes.includes(userdata._id) && <div className='flex justify-center items-center gap-2 cursor-pointer text-blue-600' onClick={handlelike}>
+            <div className='flex items-center' > <AiFillLike className='h-8 w-8' /> </div>
+            <span className='text-sm font-medium'>liked</span>
           </div>}
-          <div className='flex justify-center items-center gap-[5px] cursor-pointer' onClick={() => setshowComments(prev => !prev)}>
-            <FaRegCommentDots className='h-[40px] w-[30px]' />
-            <span>comment</span>
+          <div className='flex justify-center items-center gap-2 cursor-pointer text-gray-600 hover:text-indigo-600 transition-colors duration-200' onClick={() => setshowComments(prev => !prev)}>
+            <FaRegCommentDots className='h-8 w-8' />
+            <span className='text-sm font-medium'>comment</span>
           </div>
-          <div>
+          <div className='flex-1 min-w-[200px]'>
             <form className='flex relative' onSubmit={handleComment}>
-              <input type="text" placeholder='write a comment...' onChange={(e) => setcommentContent(e.target.value)} value={commentContent} className=' w-full h-[40px] rounded-full border-2 border-gray-300 px-[20px] pr-[50px]' />
-              <button className='absolute right-[22px] top-[10px] '> <LuSendHorizontal className='text-[#07a4ff] w-[22px] h-[22px] cursor-pointer' /></button>
+              <input type="text" placeholder='write a comment...' onChange={(e) => setcommentContent(e.target.value)} value={commentContent} className='w-full h-10 rounded-xl border border-gray-200 bg-gray-50 px-4 pr-12 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all duration-200' />
+              <button className='absolute right-3 top-1/2 -translate-y-1/2'> <LuSendHorizontal className='text-blue-600 w-5 h-5 cursor-pointer hover:text-indigo-600 transition-colors duration-200' /></button>
             </form>
 
           </div>
         </div>
 
 
-        {showComments && <div className='flex flex-col gap-[20px] pt-[10px]'>
+        {showComments && <div className='flex flex-col gap-4 pt-4 border-t border-gray-100 mt-2'>
           {comments.map((com) => (
-            <div className='  border-b-2 border-b-gray-300'>
-              <div className='flex items-center gap-[5px] '>
-                <div className='w-[40px] h-[40px] rounded-full flex justify-center items-center overflow-hidden  cursor-pointer'>
-                  <img src={com.user.profileImage || profile} alt="" className='w-full  h-full' />
+            <div className='border-b border-gray-100 pb-4 last:border-0'>
+              <div className='flex items-center gap-2'>
+                <div className='w-10 h-10 rounded-full flex justify-center items-center overflow-hidden cursor-pointer ring-2 ring-gray-100'>
+                  <img src={com.user.profileImage || profile} alt="" className='w-full h-full object-cover' />
                 </div>
-                <div className='text-gray-700 font-semibold text-[16px]'>{`${com.user?.firstname} ${com.user?.lastname}`}</div>
+                <div className='text-gray-900 font-semibold text-sm'>{`${com.user?.firstname} ${com.user?.lastname}`}</div>
 
               </div>
-              <div className='pl-[50px] pt-[10px] pb-[10px]'>{com.content}</div>
+              <div className='pl-12 pt-2 text-base text-gray-700'>{com.content}</div>
               {/* {moment(com.createdAt).fromNow()} */}
             </div>
           ))}

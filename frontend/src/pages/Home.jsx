@@ -89,35 +89,35 @@ function Home() {
 
   return (
 
-    <div className='w-full px-[20px] pb-[20px] pl-2 min-h-[100vh] bg-[#F3F4F6] pt-[80px] flex flex-col lg:flex-row justify-center items-center lg:items-start gap-[20px] relative'>
+    <div className='w-full px-4 pb-6 min-h-[100vh] bg-gray-50 pt-20 flex flex-col lg:flex-row justify-center items-center lg:items-start gap-6 relative'>
 
       {edit && <Editprofile />}
 
       <Nav />
 
-      {uploadPost && <div className='w-full h-full z-[100] bg-black fixed inset-0 opacity-[0.6] '></div>}
+      {uploadPost && <div className='w-full h-full z-[100] bg-gray-900/50 fixed inset-0'></div>}
 
       {uploadPost &&
 
-        <div className='w-[90%] max-w-[500px] h-[600px] top-[70px] bg-white shadow-lg rounded-lg fixed z-[200] p-5 flex flex-col gap-[20px] justify-start items-start'>
+        <div className='w-[90%] max-w-[500px] h-[600px] top-[70px] bg-white shadow-md border border-gray-100 rounded-xl fixed z-[200] p-6 flex flex-col gap-4 justify-start items-start'>
 
-          <div className='absolute right-[10px] top-3 '>
+          <div className='absolute right-4 top-4'>
 
-            <RxCross1 className='h-[20px] w-[20px] text-gray-800 font-bold cursor-pointer' onClick={() => setuploadPost(false)} />
+            <RxCross1 className='h-5 w-5 text-gray-600 hover:text-gray-900 cursor-pointer transition-colors duration-200' onClick={() => setuploadPost(false)} />
 
           </div>
 
-          <div className='flex justify-start items-center gap-[10px]'>
+          <div className='flex justify-start items-center gap-3'>
 
-            <div className='w-[70px] h-[70px] rounded-full flex justify-center items-center overflow-hidden cursor-pointer'>
+            <div className='w-[70px] h-[70px] rounded-full flex justify-center items-center overflow-hidden cursor-pointer ring-2 ring-gray-100'>
 
-              <img src={userdata.profileImage || profile} alt="" className='w-full h-full' />
+              <img src={userdata.profileImage || profile} alt="" className='w-full h-full object-cover' />
 
             </div>
 
             <div>
 
-              <div className='text-gray-700 font-semibold text-[20px]'>{`${userdata?.firstname} ${userdata?.lastname}`}</div>
+              <div className='text-gray-900 font-semibold text-lg'>{`${userdata?.firstname} ${userdata?.lastname}`}</div>
 
             </div>
 
@@ -125,7 +125,7 @@ function Home() {
 
           <textarea
 
-            className={`w-full ${frontendImage ? "h-[200px]" : "h-[500px]"} outline-none border-none resize-none text-[19px]`}
+            className={`w-full ${frontendImage ? "h-[200px]" : "h-[500px]"} outline-none border-none resize-none text-base text-gray-800 placeholder:text-gray-400`}
 
             value={description}
 
@@ -139,21 +139,21 @@ function Home() {
 
           <div className={`w-full ${frontendImage ? "h-[300px]" : "h-[0px]"} overflow-hidden flex justify-center items-center`}>
 
-            <img src={frontendImage || null} className='h-full rounded-lg' alt="" />
+            <img src={frontendImage || null} className='h-full rounded-xl' alt="" />
 
           </div>
 
           <div className='w-full h-[200px] flex flex-col'>
 
-            <div className='border-b-2 border-gray-500 p-[20px] flex justify-start items-center'>
+            <div className='border-b border-gray-200 p-4 flex justify-start items-center'>
 
-              <FaRegImage onClick={() => image.current.click()} className='h-[24px] w-[24px] text-gray-700 cursor-pointer' />
+              <FaRegImage onClick={() => image.current.click()} className='h-6 w-6 text-blue-600 hover:text-indigo-600 cursor-pointer transition-colors duration-200' />
 
             </div>
 
-            <div className='p-5 flex justify-end items-center'>
+            <div className='p-4 flex justify-end items-center'>
 
-              <button className='w-[100px] h-[50px] rounded-full bg-[#24b2ff] text-white cursor-pointer ' disabled={posting} onClick={handleuploadPost}>
+              <button className='min-w-[100px] h-12 px-4 rounded-xl bg-blue-600 text-white shadow-md hover:bg-blue-700 cursor-pointer transition-all duration-200 font-medium disabled:opacity-60' disabled={posting} onClick={handleuploadPost}>
 
                 {posting ? "posting.." : "Post"}
 
@@ -170,42 +170,42 @@ function Home() {
 
       {/* FEED COLUMN */}
 
-      <div className='w-full lg:w-[50%] min-h-[200px] bg-[#F3F4F6] flex flex-col gap-[20px]'>
+      <div className='w-full lg:w-[50%] min-h-[200px] bg-gray-50 flex flex-col gap-6'>
 
         {/* PROFILE CARD */}
 
-        <div className='rounded-lg w-full bg-white shadow-lg relative'>
+        <div className='rounded-xl w-full bg-white shadow-md border border-gray-100 relative overflow-hidden'>
 
-          <div className='w-[100%] h-[100px] bg-gray-400 rounded overflow-hidden flex items-center justify-center cursor-pointer'>
+          <div className='w-full h-[100px] bg-gradient-to-r from-blue-600 to-indigo-600 rounded-t-xl overflow-hidden flex items-center justify-center cursor-pointer'>
 
-            <img src={userdata.coverImage} alt="" />
+            <img src={userdata.coverImage} alt="" className='w-full h-full object-cover opacity-90' />
 
-            <MdOutlineCameraAlt className='absolute top-[20px] right-[15px] h-[25px] text-white w-[25px]' onClick={() => setedit(true)} />
-
-          </div>
-
-          <div className='w-[70px] h-[70px] rounded-full flex justify-center items-center overflow-hidden absolute top-[50px] left-[35px] cursor-pointer'>
-
-            <img src={userdata.profileImage || profile} alt="" className='w-full h-full' />
+            <MdOutlineCameraAlt className='absolute top-5 right-4 h-6 w-6 text-white drop-shadow-md' onClick={() => setedit(true)} />
 
           </div>
 
-          <div className='w-[20px] h-[20px] bg-[#17c1ff] cursor-pointer absolute top-[95px] left-[90px] rounded-full flex justify-center items-center'>
+          <div className='w-[70px] h-[70px] rounded-full flex justify-center items-center overflow-hidden absolute top-[50px] left-6 cursor-pointer ring-4 ring-white shadow-sm'>
 
-            <FiPlus className='text-white' onClick={() => setedit(true)} />
+            <img src={userdata.profileImage || profile} alt="" className='w-full h-full object-cover' />
 
           </div>
 
-          <div className='mt-5 p-3'>
+          <div className='w-5 h-5 bg-blue-600 cursor-pointer absolute top-[92px] left-[5.25rem] rounded-full flex justify-center items-center shadow-md ring-2 ring-white hover:bg-blue-700 transition-colors duration-200'>
 
-            <div className='text-gray-700 font-semibold text-[20px]'>{`${userdata?.firstname} ${userdata?.lastname}`}</div>
+            <FiPlus className='text-white w-3 h-3' onClick={() => setedit(true)} />
 
-            <div className='text-gray-500 text-[16px]'>{userdata.headline}</div>
+          </div>
 
-            <div className='text-gray-500 text-[16px]'>{userdata.location}</div>
+          <div className='mt-8 p-6 pt-2'>
+
+            <div className='text-gray-900 font-semibold text-xl'>{`${userdata?.firstname} ${userdata?.lastname}`}</div>
+
+            <div className='text-sm text-gray-500 mt-1'>{userdata.headline}</div>
+
+            <div className='text-sm text-gray-500'>{userdata.location}</div>
             <div className='flex items-center justify-start'>
-              <button className='w-[50%] h-[40px] rounded-full border-2 border-[#2dc0ff] cursor-pointer text-[#2dc0ff] my-[20px] flex justify-center items-center gap-3' onClick={() => setedit(true)}>
-              Edit profile <HiPencil />
+              <button className='w-full sm:w-1/2 h-10 rounded-xl border border-blue-600 text-blue-600 shadow-sm hover:bg-blue-600 hover:text-white my-4 flex justify-center items-center gap-2 font-medium transition-all duration-200' onClick={() => setedit(true)}>
+              Edit profile <HiPencil className='w-4 h-4' />
               </button>
             </div>
 
@@ -218,11 +218,11 @@ function Home() {
 
         {/* POST BOX */}
 
-        <div className='w-full bg-white shadow-lg rounded-lg p-4 flex items-center gap-3'>
+        <div className='w-full bg-white shadow-md border border-gray-100 rounded-xl p-4 flex items-center gap-3'>
 
-          <div className='w-[50px] h-[50px] rounded-full overflow-hidden cursor-pointer'>
+          <div className='w-[50px] h-[50px] rounded-full overflow-hidden cursor-pointer ring-2 ring-gray-100'>
 
-            <img src={userdata.profileImage || profile} alt="" className='w-full h-full' />
+            <img src={userdata.profileImage || profile} alt="" className='w-full h-full object-cover' />
 
           </div>
 
@@ -230,7 +230,7 @@ function Home() {
 
             onClick={() => setuploadPost(true)}
 
-            className='flex-1 border border-gray-300 rounded-lg px-4 py-2 text-gray-500 cursor-pointer hover:bg-gray-100'
+            className='flex-1 border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-500 cursor-pointer hover:bg-gray-50 transition-colors duration-200'
 
           >
 
@@ -272,13 +272,13 @@ function Home() {
 
       {/* SUGGESTIONS */}
 
-      <div className='w-full lg:w-[25%] min-h-[200px] bg-[white] shadow-lg hidden lg:flex flex-col'>
+      <div className='w-full lg:w-[25%] min-h-[200px] bg-white border border-gray-100 shadow-md rounded-xl hidden lg:flex flex-col mb-6'>
 
-        <div>
+        <div className='p-4'>
 
           {suggestedUsers.length > 0 &&
 
-            <div className='p-3 text-gray-700 font-semibold text-[18px]'>
+            <div className='mb-4 text-gray-900 font-semibold text-lg'>
 
               People you may know
 
@@ -288,23 +288,23 @@ function Home() {
 
           {suggestedUsers.length > 0 && suggestedUsers.map((user) => (
 
-            <div className='flex rounded-lg items-center gap-[10px] p-[10px] cursor-pointer hover:bg-gray-100' onClick={() => handleGetProfile(user?.username)}>
+            <div className='flex rounded-xl items-center gap-3 p-3 cursor-pointer hover:bg-gray-50 transition-colors duration-200' onClick={() => handleGetProfile(user?.username)}>
 
-              <div className='w-[40px] h-[40px] rounded-full overflow-hidden'>
+              <div className='w-10 h-10 rounded-full overflow-hidden ring-2 ring-gray-100 flex-shrink-0'>
 
-                <img src={user.profileImage || profile} alt="" className='w-full h-full' />
+                <img src={user.profileImage || profile} alt="" className='w-full h-full object-cover' />
 
               </div>
 
-              <div className='flex flex-col items-start justify-center'>
+              <div className='flex flex-col items-start justify-center min-w-0'>
 
-                <div className='text-gray-600 font-semibold text-[19px]'>
+                <div className='text-gray-900 font-semibold text-base truncate w-full'>
 
                   {`${user?.firstname} ${user?.lastname}`}
 
                 </div>
 
-                <div className='text-gray-600 font-semibold text-[15px]'>
+                <div className='text-sm text-gray-500 truncate w-full'>
 
                   {`${user?.headline}`}
 

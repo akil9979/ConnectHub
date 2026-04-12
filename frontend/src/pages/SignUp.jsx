@@ -51,58 +51,58 @@ function SignUp() {
     }
   }
   return (
-    <div className='bg-[#18181B]'>
+    <div className='min-h-screen bg-gray-50'>
       <div className='w-full max-w-24 h-10 m-8'>
         {/* <img src={logo} alt="" /> */}
-        <h1 className="text-xl font-bold text-[#FAFAFA] ">
+        <h1 className="text-xl font-bold text-gray-900 tracking-tight">
           ConnectHub
         </h1>
       </div>
-      <div className='w-full h-screen bg-[#18181B] flex flex-col items-center justify-start'>
+      <div className='w-full min-h-[calc(100vh-5rem)] bg-gray-50 flex flex-col items-center justify-start px-4 pb-8'>
 
-        <form action="" onSubmit={handleSignUp} className='w-xs h-full max-h-110 shadow-xl flex flex-col p-5 justify-center gap-3 rounded-lg bg-white' >
-          <h1 className='font-semibold text-[30px] text-gray-800 mb-3'>SignUp</h1>
+        <form action="" onSubmit={handleSignUp} className='w-full max-w-sm shadow-md flex flex-col p-6 justify-center gap-3 rounded-xl bg-white border border-gray-100 mb-6' >
+          <h1 className='font-semibold text-2xl text-gray-900 mb-6'>SignUp</h1>
           <input
             type="text"
             placeholder='firstname'
             required
             value={firstname}
             onChange={(e) => setfirstname(e.target.value)}
-            className='rounded-md px-2 w-[100%] h-[40px] border-2 border-gray-600 text-gray-800 text-[18px] py-[10px]' />
+            className='rounded-xl px-3 w-full h-11 border border-gray-200 bg-gray-50 text-gray-900 text-base focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all duration-200' />
           <input
             type="text"
             placeholder='lastname'
             required
             value={lastname}
             onChange={(e) => setlastname(e.target.value)}
-            className='rounded-md px-2 w-[100%] h-[40px] border-2 border-gray-600 text-gray-800 text-[18px] py-[10px]' />
+            className='rounded-xl px-3 w-full h-11 border border-gray-200 bg-gray-50 text-gray-900 text-base focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all duration-200' />
           <input
             type="text"
             placeholder='username'
             required
             value={username}
             onChange={(e) => setusername(e.target.value)}
-            className='rounded-md px-2 w-[100%] h-[40px] border-2 border-gray-600 text-gray-800 text-[18px] py-[10px]' />
+            className='rounded-xl px-3 w-full h-11 border border-gray-200 bg-gray-50 text-gray-900 text-base focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all duration-200' />
           <input
             type="email"
             placeholder='email'
             required
             value={email}
             onChange={(e) => setemail(e.target.value)}
-            className='rounded-md px-2 w-[100%] h-[40px] border-2 border-gray-600 text-gray-800 text-[18px] py-[10px]' />
-          <div className='rounded-md  w-[100%] h-[40px] border-2 border-gray-600 text-gray-800 text-[18px] relative '>
+            className='rounded-xl px-3 w-full h-11 border border-gray-200 bg-gray-50 text-gray-900 text-base focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all duration-200' />
+          <div className='rounded-xl w-full h-11 border border-gray-200 bg-gray-50 text-gray-900 text-base relative'>
             <input
               type={show ? "text" : "password"}
               placeholder='password'
               required
               value={password}
               onChange={(e) => setpassword(e.target.value)}
-              className='rounded-md  h-full w-full text-gray-800 text-[18px] px-2 py-[10px] ' />
-            <span className='absolute right-[21px] top-[7px] cursor-pointer font-semibold text-[#1dc9fd] ' onClick={() => setshow(prev => !prev)}>{show ? "hidden" : "show"}</span>
+              className='rounded-xl h-full w-full text-gray-900 text-base px-3 pr-16 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500/30' />
+            <span className='absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-sm font-medium text-blue-600 hover:text-indigo-600 transition-colors duration-200' onClick={() => setshow(prev => !prev)}>{show ? "hidden" : "show"}</span>
           </div>
-          {error && <p className='text-center text-red-500'>*{error}</p>}
-          <button className='w-[100%] h-[50px] rounded-full bg-[#24b2ff] text-white cursor-pointer ' disabled={loading}>{loading ? "loading..." : "SignUp"}</button>
-          <p className='text-center cursor-pointer ' onClick={() => navigate("/login")}>Alredy have an account ? <span className=' text-[#24b2ff] cursor-pointer'>Sign In</span></p>
+          {error && <p className='text-center text-sm text-red-600'>*{error}</p>}
+          <button className='w-full h-12 rounded-xl bg-blue-600 text-white shadow-md hover:bg-blue-700 cursor-pointer transition-all duration-200 font-medium disabled:opacity-60' disabled={loading}>{loading ? "loading..." : "SignUp"}</button>
+          <p className='text-center text-sm text-gray-600 cursor-pointer' onClick={() => navigate("/login")}>Alredy have an account ? <span className='text-blue-600 font-medium hover:text-indigo-600 transition-colors duration-200'>Sign In</span></p>
         </form>
       </div>
 
