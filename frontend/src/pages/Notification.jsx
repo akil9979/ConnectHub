@@ -41,27 +41,27 @@ function Notification() {
     }, [])
 
     return (
-        <div className='w-screen min-h-[100vh] bg-gray-50 pt-24 flex flex-col items-center px-4'>
+        <div className='w-screen min-h-[100vh] bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-100 pt-24 flex flex-col items-center px-4'>
             <Nav />
 
             
-            <div className='w-full max-w-[600px] min-h-[70px] bg-white shadow-md border border-gray-100 rounded-xl flex items-center justify-between mb-6 px-6 py-4 text-lg font-semibold text-gray-900'>
+            <div className='w-full max-w-[600px] min-h-[70px] bg-white/70 backdrop-blur-md shadow-md border border-white/40 rounded-2xl flex items-center justify-between mb-6 px-6 py-4 text-lg font-bold text-gray-900'>
                  Notifications ({notificationData?.length})
-                 {notificationData?.length > 0 && <button className='flex justify-center items-center min-w-[100px] h-9 px-3 rounded-xl border border-red-200 cursor-pointer text-red-600 shadow-sm hover:bg-red-50 text-sm font-medium transition-all duration-200' onClick={()=>handleDeleteAllNotification()}>Clear All</button>}
+                 {notificationData?.length > 0 && <button className='flex justify-center items-center min-w-[100px] h-9 px-3 rounded-xl border border-red-200 cursor-pointer text-red-500 shadow-sm hover:bg-red-50 hover:shadow-md text-sm font-medium transition-all duration-200' onClick={()=>handleDeleteAllNotification()}>Clear All</button>}
                  
             </div>
 
-            <div className='w-full max-w-[600px] flex flex-col gap-3 pb-10'>
+            <div className='w-full max-w-[600px] flex flex-col gap-4 pb-10'>
                 {notificationData.map((noti, index) => (
-                    <div key={index} className='w-full flex flex-col items-start justify-center bg-white gap-2 p-6 rounded-xl relative shadow-md border border-gray-100'>
+                    <div key={index} className='w-full flex flex-col items-start justify-center bg-white/70 backdrop-blur-sm hover:bg-white/90 gap-2 p-4 rounded-2xl relative shadow-sm hover:shadow-md border border-white/40 transition-all duration-200'>
                         <RxCross1 className='h-5 w-5 text-gray-400 hover:text-gray-600 cursor-pointer absolute top-4 right-4 transition-colors duration-200' onClick={()=>handleDeleteNotification(noti._id)} />
                         
                         <div className='flex justify-center items-center gap-3'>
                             <div className='w-[50px] h-[50px] rounded-full overflow-hidden cursor-pointer flex-shrink-0 ring-2 ring-gray-100'>
-                                <img src={noti.relatedUser.profileImage || profile} alt="" className='w-full h-full object-cover' />
+                                <img src={noti.relatedUser?.profileImage || profile} alt="" className='w-full h-full object-cover' />
                             </div>
                             <div className='text-gray-900 font-semibold text-base'>
-                                {`${noti?.relatedUser.firstname} ${noti?.relatedUser.lastname}`}
+                                {`${noti?.relatedUser?.firstname} ${noti?.relatedUser?.lastname}`}
                             </div>
                         </div>
 

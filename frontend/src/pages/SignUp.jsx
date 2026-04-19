@@ -51,58 +51,79 @@ function SignUp() {
     }
   }
   return (
-    <div className='min-h-screen bg-gray-50'>
-      <div className='w-full max-w-24 h-10 m-8'>
-        {/* <img src={logo} alt="" /> */}
-        <h1 className="text-xl font-bold text-gray-900 tracking-tight">
-          ConnectHub
-        </h1>
-      </div>
-      <div className='w-full min-h-[calc(100vh-5rem)] bg-gray-50 flex flex-col items-center justify-start px-4 pb-8'>
+    <div className='min-h-screen bg-transparent flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8'>
+      <div className='w-full max-w-md space-y-8'>
+        <div className='flex flex-col items-center justify-center'>
+          <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
+            ConnectHub
+          </h1>
+          <h2 className="mt-6 text-center text-xl font-medium text-gray-600">
+            Create a new account
+          </h2>
+        </div>
 
-        <form action="" onSubmit={handleSignUp} className='w-full max-w-sm shadow-md flex flex-col p-6 justify-center gap-3 rounded-xl bg-white border border-gray-100 mb-6' >
-          <h1 className='font-semibold text-2xl text-gray-900 mb-6'>SignUp</h1>
-          <input
-            type="text"
+        <form action="" onSubmit={handleSignUp} className='mt-8 bg-white/70 backdrop-blur-md py-8 px-4 shadow-[0_8px_30px_rgb(0,0,0,0.08)] sm:rounded-3xl sm:px-10 border border-white/60 flex flex-col gap-5 hover:bg-white/80 transition-all duration-300' >
+          <div className='grid grid-cols-2 gap-4'>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">First name</label>
+              <input
+                type="text"
             placeholder='firstname'
-            required
-            value={firstname}
-            onChange={(e) => setfirstname(e.target.value)}
-            className='rounded-xl px-3 w-full h-11 border border-gray-200 bg-gray-50 text-gray-900 text-base focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all duration-200' />
-          <input
-            type="text"
+                required
+                value={firstname}
+                onChange={(e) => setfirstname(e.target.value)}
+                className='appearance-none block w-full px-3 py-2 border border-white/60 bg-white/50 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500/50 focus:bg-white/80 hover:bg-white/70 sm:text-sm transition-all duration-300' />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Last name</label>
+              <input
+                type="text"
             placeholder='lastname'
-            required
-            value={lastname}
-            onChange={(e) => setlastname(e.target.value)}
-            className='rounded-xl px-3 w-full h-11 border border-gray-200 bg-gray-50 text-gray-900 text-base focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all duration-200' />
-          <input
-            type="text"
-            placeholder='username'
-            required
-            value={username}
-            onChange={(e) => setusername(e.target.value)}
-            className='rounded-xl px-3 w-full h-11 border border-gray-200 bg-gray-50 text-gray-900 text-base focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all duration-200' />
-          <input
-            type="email"
-            placeholder='email'
-            required
-            value={email}
-            onChange={(e) => setemail(e.target.value)}
-            className='rounded-xl px-3 w-full h-11 border border-gray-200 bg-gray-50 text-gray-900 text-base focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all duration-200' />
-          <div className='rounded-xl w-full h-11 border border-gray-200 bg-gray-50 text-gray-900 text-base relative'>
-            <input
-              type={show ? "text" : "password"}
-              placeholder='password'
-              required
-              value={password}
-              onChange={(e) => setpassword(e.target.value)}
-              className='rounded-xl h-full w-full text-gray-900 text-base px-3 pr-16 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500/30' />
-            <span className='absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-sm font-medium text-blue-600 hover:text-indigo-600 transition-colors duration-200' onClick={() => setshow(prev => !prev)}>{show ? "hidden" : "show"}</span>
+                required
+                value={lastname}
+                onChange={(e) => setlastname(e.target.value)}
+                className='appearance-none block w-full px-3 py-2 border border-white/60 bg-white/50 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500/50 focus:bg-white/80 hover:bg-white/70 sm:text-sm transition-all duration-300' />
+            </div>
           </div>
-          {error && <p className='text-center text-sm text-red-600'>*{error}</p>}
-          <button className='w-full h-12 rounded-xl bg-blue-600 text-white shadow-md hover:bg-blue-700 cursor-pointer transition-all duration-200 font-medium disabled:opacity-60' disabled={loading}>{loading ? "loading..." : "SignUp"}</button>
-          <p className='text-center text-sm text-gray-600 cursor-pointer' onClick={() => navigate("/login")}>Alredy have an account ? <span className='text-blue-600 font-medium hover:text-indigo-600 transition-colors duration-200'>Sign In</span></p>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Username</label>
+            <input
+              type="text"
+            placeholder='username'
+              required
+              value={username}
+              onChange={(e) => setusername(e.target.value)}
+              className='appearance-none block w-full px-3 py-2 border border-white/60 bg-white/50 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500/50 focus:bg-white/80 hover:bg-white/70 sm:text-sm transition-all duration-300' />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Email address</label>
+            <input
+              type="email"
+            placeholder='email'
+              required
+              value={email}
+              onChange={(e) => setemail(e.target.value)}
+              className='appearance-none block w-full px-3 py-2 border border-white/60 bg-white/50 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500/50 focus:bg-white/80 hover:bg-white/70 sm:text-sm transition-all duration-300' />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+            <div className='relative'>
+              <input
+                type={show ? "text" : "password"}
+                placeholder='••••••••'
+                required
+                value={password}
+                onChange={(e) => setpassword(e.target.value)}
+                className='appearance-none block w-full px-3 py-2 border border-white/60 bg-white/50 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500/50 focus:bg-white/80 hover:bg-white/70 sm:text-sm transition-all duration-300 pr-12' />
+              <button type="button" className='absolute inset-y-0 right-0 pr-3 flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors' onClick={() => setshow(prev => !prev)}>{show ? "Hide" : "Show"}</button>
+            </div>
+          </div>
+          {error && <div className='rounded-md bg-red-50 p-3'><p className='text-sm text-red-700 text-center'>{error}</p></div>}
+          <button className='w-full flex justify-center py-2.5 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 disabled:opacity-60' disabled={loading}>{loading ? "Creating account..." : "Sign up"}</button>
+          
+          <div className="mt-4 text-center">
+            <p className='text-sm text-gray-600'>Already have an account? <span className='font-medium text-blue-600 hover:text-blue-500 cursor-pointer transition-colors' onClick={() => navigate("/login")}>Sign in</span></p>
+          </div>
         </form>
       </div>
 

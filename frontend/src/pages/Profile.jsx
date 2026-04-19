@@ -27,13 +27,13 @@ function Profile() {
     }, [profiledata])
 
     return (
-        <div className='w-full min-h-screen bg-gray-50 pt-24 flex flex-col items-center pb-10'>
+        <div className='w-full min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-100 pt-24 flex flex-col items-center pb-10'>
             {edit && <Editprofile />}
             <Nav />
             <div className='w-full max-w-[900px] min-h-[100vh] flex flex-col gap-6 px-4'>
 
 
-                <div className='rounded-xl w-full min-h-[300px] bg-white shadow-md border border-gray-100 relative overflow-hidden' >
+                <div className='rounded-3xl w-full min-h-[300px] bg-white/70 backdrop-blur-md shadow-md border border-white/40 relative overflow-hidden' >
                     <div className='w-full h-[100px] bg-gradient-to-r from-blue-600 to-indigo-600 rounded-t-xl overflow-hidden flex items-center justify-center cursor-pointer'>
                         <img src={profiledata.coverImage} alt="" className='w-full h-full object-cover opacity-90' />
                         {userdata._id == profiledata._id && <MdOutlineCameraAlt className='absolute top-5 right-4 h-6 w-6 text-white drop-shadow-md' onClick={() => setedit(true)} />}
@@ -46,7 +46,7 @@ function Profile() {
                         <FiPlus className='text-white w-3 h-3' onClick={() => setedit(true)} />
                     </div>}
 
-                    <div className='mt-8 p-6 pt-2'>
+                    <div className='mt-6 p-6 pt-2'>
                         <div className='text-gray-900 font-bold text-xl'>{`${profiledata?.firstname} ${profiledata?.lastname}`}</div>
 
                         <div className='text-base text-gray-600 mt-1'>{profiledata.headline}</div>
@@ -58,39 +58,39 @@ function Profile() {
                     </div>
                     
                 </div>
-                <div className="w-full bg-white shadow-md border border-gray-100 rounded-xl flex justify-around items-center p-4 text-base font-semibold text-gray-600">
+                <div className="w-full bg-white/70 backdrop-blur-md shadow-md border border-white/40 rounded-2xl flex justify-around items-center p-4 text-base font-semibold text-gray-600">
 
                     <div
                         onClick={() => setActiveTab("posts")}
-                        className={`cursor-pointer py-1 px-2 rounded-lg transition-colors duration-200 ${activeTab === "posts" ? "text-blue-600 bg-blue-50" : "hover:text-gray-900"}`}
+                        className={`cursor-pointer py-2 px-6 rounded-full transition-all duration-200 ${activeTab === "posts" ? "text-white bg-blue-600 shadow-md" : "hover:text-gray-900 hover:bg-white/50"}`}
                     >
                         Posts
                     </div>
 
                     <div
                         onClick={() => setActiveTab("skills")}
-                        className={`cursor-pointer py-1 px-2 rounded-lg transition-colors duration-200 ${activeTab === "skills" ? "text-blue-600 bg-blue-50" : "hover:text-gray-900"}`}
+                        className={`cursor-pointer py-2 px-6 rounded-full transition-all duration-200 ${activeTab === "skills" ? "text-white bg-blue-600 shadow-md" : "hover:text-gray-900 hover:bg-white/50"}`}
                     >
                         Skills
                     </div>
 
                     <div
                         onClick={() => setActiveTab("education")}
-                        className={`cursor-pointer py-1 px-2 rounded-lg transition-colors duration-200 ${activeTab === "education" ? "text-blue-600 bg-blue-50" : "hover:text-gray-900"}`}
+                        className={`cursor-pointer py-2 px-6 rounded-full transition-all duration-200 ${activeTab === "education" ? "text-white bg-blue-600 shadow-md" : "hover:text-gray-900 hover:bg-white/50"}`}
                     >
                         Education
                     </div>
 
                     <div
                         onClick={() => setActiveTab("experience")}
-                        className={`cursor-pointer py-1 px-2 rounded-lg transition-colors duration-200 ${activeTab === "experience" ? "text-blue-600 bg-blue-50" : "hover:text-gray-900"}`}
+                        className={`cursor-pointer py-2 px-6 rounded-full transition-all duration-200 ${activeTab === "experience" ? "text-white bg-blue-600 shadow-md" : "hover:text-gray-900 hover:bg-white/50"}`}
                     >
                         Experience
                     </div>
 
                 </div>
                 {activeTab==="posts" && ( <div className='flex flex-col gap-6'>
-                    <div className='w-full min-h-[100px] flex items-center p-6 text-lg text-gray-900 font-semibold bg-white shadow-md border border-gray-100 rounded-xl w-full'>
+                    <div className='w-full min-h-[100px] flex items-center p-6 text-lg text-gray-900 font-semibold bg-white/70 backdrop-blur-sm shadow-sm border border-white/40 rounded-2xl w-full'>
                         {`Posts (${profilePosts?.length})`}
                     </div>
                     <div >
@@ -99,7 +99,7 @@ function Profile() {
                         ))}
                     </div>
                 </div>  )}
-                {activeTab==="skills" && profiledata?.skills?.length > 0 && <div className='w-full h-full flex flex-col justify-center p-6 text-gray-700 text-base font-semibold bg-white shadow-md border border-gray-100 rounded-xl w-full'>
+                {activeTab==="skills" && profiledata?.skills?.length > 0 && <div className='w-full h-full flex flex-col justify-center p-6 text-gray-700 text-base font-semibold bg-white/70 backdrop-blur-sm shadow-sm border border-white/40 rounded-2xl hover:shadow-md transition-all duration-200 w-full'>
                     <div className='text-lg text-gray-900 mb-4'>
                         skills ({profiledata.skills.length})</div>
                     <div className='flex flex-col gap-6'>
@@ -115,7 +115,7 @@ function Profile() {
                     </div>
                 </div>}
 
-                {activeTab==="education" && profiledata?.education?.length > 0 && <div className='w-full h-full flex flex-col justify-center p-6 text-gray-700 text-base font-semibold bg-white shadow-md border border-gray-100 rounded-xl w-full'>
+                {activeTab==="education" && profiledata?.education?.length > 0 && <div className='w-full h-full flex flex-col justify-center p-6 text-gray-700 text-base font-semibold bg-white/70 backdrop-blur-sm shadow-sm border border-white/40 rounded-2xl hover:shadow-md transition-all duration-200 w-full'>
                     <div className='text-lg text-gray-900 mb-4'>
                         Education ({profiledata?.education?.length})</div>
                     <div className='flex flex-col gap-6'>
@@ -134,7 +134,7 @@ function Profile() {
                     </div>
 
                 </div>}
-                {activeTab==="experience" && profiledata?.experience?.length > 0 && <div className='w-full h-full flex flex-col justify-center p-6 text-gray-700 text-base font-semibold bg-white shadow-md border border-gray-100 rounded-xl w-full'>
+                {activeTab==="experience" && profiledata?.experience?.length > 0 && <div className='w-full h-full flex flex-col justify-center p-6 text-gray-700 text-base font-semibold bg-white/70 backdrop-blur-sm shadow-sm border border-white/40 rounded-2xl hover:shadow-md transition-all duration-200 w-full'>
                     <div className='text-lg text-gray-900 mb-4'>
                         Experience ({profiledata?.experience?.length})</div>
                     <div className='flex flex-col gap-6'>
