@@ -51,7 +51,13 @@ function SignUp() {
     }
   }
   return (
-    <div className='min-h-screen bg-transparent flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8'>
+    <div className='relative min-h-screen bg-transparent flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8 overflow-hidden'>
+  {/* Geometric background shapes */}
+  <div className='absolute inset-0 pointer-events-none'>
+    <div className='absolute top-[-12rem] left-[-10rem] w-[30rem] h-[30rem] bg-indigo-300/30 rounded-full filter blur-3xl'></div>
+    <div className='absolute bottom-[-10rem] right-[-8rem] w-[25rem] h-[25rem] bg-teal-300/30 rounded-full filter blur-3xl'></div>
+    <div className='absolute top-1/4 left-1/2 w-[22rem] h-[22rem] bg-violet-300/30 filter blur-2xl' style={{ clipPath: "polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)" }}></div>
+  </div>
       <div className='w-full max-w-md space-y-8'>
         <div className='flex flex-col items-center justify-center'>
           <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
@@ -72,7 +78,7 @@ function SignUp() {
                 required
                 value={firstname}
                 onChange={(e) => setfirstname(e.target.value)}
-                className='appearance-none block w-full px-3 py-2 border border-white/60 bg-white/50 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500/50 focus:bg-white/80 hover:bg-white/70 sm:text-sm transition-all duration-300' />
+                className='appearance-none block w-full px-3 py-2 border border-white/60 bg-white/50 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand/50 focus:bg-white/80 hover:bg-white/70 sm:text-sm transition-all duration-300' />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Last name</label>
@@ -82,7 +88,7 @@ function SignUp() {
                 required
                 value={lastname}
                 onChange={(e) => setlastname(e.target.value)}
-                className='appearance-none block w-full px-3 py-2 border border-white/60 bg-white/50 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500/50 focus:bg-white/80 hover:bg-white/70 sm:text-sm transition-all duration-300' />
+                className='appearance-none block w-full px-3 py-2 border border-white/60 bg-white/50 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand/50 focus:bg-white/80 hover:bg-white/70 sm:text-sm transition-all duration-300' />
             </div>
           </div>
           <div>
@@ -93,7 +99,7 @@ function SignUp() {
               required
               value={username}
               onChange={(e) => setusername(e.target.value)}
-              className='appearance-none block w-full px-3 py-2 border border-white/60 bg-white/50 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500/50 focus:bg-white/80 hover:bg-white/70 sm:text-sm transition-all duration-300' />
+              className='appearance-none block w-full px-3 py-2 border border-white/60 bg-white/50 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand/50 focus:bg-white/80 hover:bg-white/70 sm:text-sm transition-all duration-300' />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Email address</label>
@@ -103,7 +109,7 @@ function SignUp() {
               required
               value={email}
               onChange={(e) => setemail(e.target.value)}
-              className='appearance-none block w-full px-3 py-2 border border-white/60 bg-white/50 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500/50 focus:bg-white/80 hover:bg-white/70 sm:text-sm transition-all duration-300' />
+              className='appearance-none block w-full px-3 py-2 border border-white/60 bg-white/50 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand/50 focus:bg-white/80 hover:bg-white/70 sm:text-sm transition-all duration-300' />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
@@ -114,15 +120,15 @@ function SignUp() {
                 required
                 value={password}
                 onChange={(e) => setpassword(e.target.value)}
-                className='appearance-none block w-full px-3 py-2 border border-white/60 bg-white/50 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500/50 focus:bg-white/80 hover:bg-white/70 sm:text-sm transition-all duration-300 pr-12' />
+                className='appearance-none block w-full px-3 py-2 border border-white/60 bg-white/50 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand/50 focus:bg-white/80 hover:bg-white/70 sm:text-sm transition-all duration-300 pr-12' />
               <button type="button" className='absolute inset-y-0 right-0 pr-3 flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors' onClick={() => setshow(prev => !prev)}>{show ? "Hide" : "Show"}</button>
             </div>
           </div>
           {error && <div className='rounded-md bg-red-50 p-3'><p className='text-sm text-red-700 text-center'>{error}</p></div>}
-          <button className='w-full flex justify-center py-2.5 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 disabled:opacity-60' disabled={loading}>{loading ? "Creating account..." : "Sign up"}</button>
+          <button className='w-full flex justify-center py-2.5 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-brand hover:bg-brand-dark hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand transition-all duration-200 disabled:opacity-60' disabled={loading}>{loading ? "Creating account..." : "Sign up"}</button>
           
           <div className="mt-4 text-center">
-            <p className='text-sm text-gray-600'>Already have an account? <span className='font-medium text-blue-600 hover:text-blue-500 cursor-pointer transition-colors' onClick={() => navigate("/login")}>Sign in</span></p>
+            <p className='text-sm text-gray-600'>Already have an account? <span className='font-medium text-brand hover:text-brand-dark cursor-pointer transition-colors' onClick={() => navigate("/login")}>Sign in</span></p>
           </div>
         </form>
       </div>

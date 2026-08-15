@@ -5,6 +5,7 @@ import { IoHomeSharp } from "react-icons/io5";
 import { FaUserFriends } from "react-icons/fa";
 import { HiUserGroup } from "react-icons/hi";
 import { IoIosNotifications } from "react-icons/io";
+import { MdOutlineExplore } from "react-icons/md";
 import profile from '../assets/profile.webp'
 import { userDatacontext } from '../context/UserContext';
 import { authdatacontext } from '../context/AuthContext';
@@ -52,7 +53,7 @@ function Nav() {
 
                 <div onClick={() => navigate("/")} className='flex items-center gap-2 cursor-pointer'>
                     {/* <img src={logo2} alt="" className='w-[35px]' /> */}
-                    <h1 className="text-xl font-bold text-white tracking-tight hover:text-fuchsia-400 transition-colors duration-300">
+                    <h1 className="text-xl font-bold text-white tracking-tight hover:text-accent transition-colors duration-300">
                         ConnectHub
                     </h1>
                 </div>
@@ -75,7 +76,7 @@ function Nav() {
 
                 <div className="relative flex items-center hidden sm:flex">
                     <div className={`absolute left-4 text-gray-400`}><IoSearch className='w-4 h-4' /></div>
-                    <input type="text" placeholder='Search...' onChange={(e) => setsearchQuery(e.target.value)} value={searchQuery} className={`pl-11 w-[200px] lg:w-[320px] px-4 py-2 rounded-full border border-gray-700 bg-gray-700 text-sm text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-fuchsia-500 hover:bg-gray-700 transition-all duration-300 shadow-sm backdrop-blur-sm`} />
+                    <input type="text" placeholder='Search...' onChange={(e) => setsearchQuery(e.target.value)} value={searchQuery} className={`pl-11 w-[200px] lg:w-[320px] px-4 py-2 rounded-full border border-gray-700 bg-gray-700 text-sm text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand hover:bg-gray-700 transition-all duration-300 shadow-sm backdrop-blur-sm`} />
 
                 </div>
             </div>
@@ -86,10 +87,10 @@ function Nav() {
                         <img src={userdata.profileImage || profile} alt="" className='w-full h-full object-cover' />
                     </div>
                     <div className='text-white font-bold text-lg text-center leading-tight'>{`${userdata?.firstname} ${userdata?.lastname}`}</div>
-                    <button className='w-full h-10 rounded-2xl bg-fuchsia-600 text-white font-medium hover:bg-fuchsia-700 hover:scale-105 transition-all duration-300' onClick={() => handleGetProfile(userdata?.username)}>View Profile</button>
+                    <button className='w-full h-10 rounded-2xl bg-brand text-white font-medium hover:bg-brand-dark hover:scale-105 transition-all duration-300' onClick={() => handleGetProfile(userdata?.username)}>View Profile</button>
                     <div className='w-full h-[1px] bg-gray-800 my-1'></div>
 
-                    <div className='flex w-full gap-3 items-center justify-start text-gray-300 hover:text-fuchsia-400 cursor-pointer transition-all duration-300 rounded-xl p-2 hover:bg-gray-800' onClick={() => navigate("/Network")}>
+                    <div className='flex w-full gap-3 items-center justify-start text-gray-300 hover:text-accent cursor-pointer transition-all duration-300 rounded-xl p-2 hover:bg-gray-800' onClick={() => navigate("/Network")}>
                         <HiUserGroup className='w-5 h-5' />
                         <div className='font-medium text-sm'>Connections</div>
                     </div>
@@ -97,19 +98,23 @@ function Nav() {
 
                 </div>}
 
-                <div className='lg:flex flex-col items-center justify-center text-white hover:text-fuchsia-400 hover:-translate-y-1 hidden cursor-pointer transition-all duration-300' onClick={() => navigate("/")}>
+                <div className='lg:flex flex-col items-center justify-center text-white hover:text-accent hover:-translate-y-1 hidden cursor-pointer transition-all duration-300' onClick={() => navigate("/")}>
                     <IoHomeSharp className='w-[22px] h-[22px]' />
                     <div className='text-[11px] font-medium mt-1'>Home</div>
                 </div>
-                <div className='lg:flex flex-col items-center justify-center text-white hover:text-fuchsia-400 hover:-translate-y-1 hidden cursor-pointer transition-all duration-300' onClick={() => navigate("/Network")}>
+                <div className='lg:flex flex-col items-center justify-center text-white hover:text-accent hover:-translate-y-1 hidden cursor-pointer transition-all duration-300' onClick={() => navigate("/Network")}>
                     <HiUserGroup className='w-[22px] h-[22px]' />
                     <div className='text-[11px] font-medium mt-1'>Network</div>
                 </div>
-                <div className='flex flex-col items-center justify-center text-white hover:text-fuchsia-400 hover:-translate-y-1 cursor-pointer transition-all duration-300' onClick={() => navigate("/Notification")} >
+                <div className='lg:flex flex-col items-center justify-center text-white hover:text-accent hover:-translate-y-1 hidden cursor-pointer transition-all duration-300' onClick={() => navigate("/explore")}>
+                    <MdOutlineExplore className='w-[22px] h-[22px]' />
+                    <div className='text-[11px] font-medium mt-1'>Explore</div>
+                </div>
+                <div className='flex flex-col items-center justify-center text-white hover:text-accent hover:-translate-y-1 cursor-pointer transition-all duration-300' onClick={() => navigate("/Notification")} >
                     <IoIosNotifications className='w-[24px] h-[24px]' />
                     <div className='text-[11px] font-medium mt-1 md:block hidden'>Notifications</div>
                 </div>
-                <div className='w-9 h-9 rounded-full overflow-hidden ring-2 ring-gray-700 cursor-pointer hover:ring-fuchsia-500 hover:scale-105 transition-all duration-300'>
+                <div className='w-9 h-9 rounded-full overflow-hidden ring-2 ring-gray-700 cursor-pointer hover:ring-brand hover:scale-105 transition-all duration-300'>
                     <img src={userdata.profileImage || profile} alt="" className='w-full h-full object-cover' onClick={() => setshowPopup(prev => !prev)} />
                 </div>
             </div>

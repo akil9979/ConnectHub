@@ -1,7 +1,9 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import Nav from '../component/Nav'
 import profile from '../assets/profile.webp'
-import { FiPlus } from "react-icons/fi";
+import { useNavigate } from 'react-router-dom';
+
+import { FiPlus, FiFileText } from "react-icons/fi";
 import { MdOutlineCameraAlt } from "react-icons/md";
 import { userDatacontext } from '../context/UserContext'
 import { HiPencil } from "react-icons/hi2";
@@ -25,6 +27,9 @@ function Home() {
 
   const [posting, setposting] = useState(false)
   const [suggestedUsers, setsuggestedUsers] = useState([])
+
+
+  const navigate = useNavigate()
 
   const image = useRef()
 
@@ -80,10 +85,10 @@ function Home() {
 
   }
 
+
+
   useEffect(() => {
-
     handleSuggestion()
-
   }, [])
 
 
@@ -147,13 +152,13 @@ function Home() {
 
             <div className='border-b border-gray-200 p-4 flex justify-start items-center'>
 
-              <FaRegImage onClick={() => image.current.click()} className='h-6 w-6 text-blue-600 hover:text-indigo-600 cursor-pointer transition-colors duration-200' />
+              <FaRegImage onClick={() => image.current.click()} className='h-6 w-6 text-brand hover:text-accent cursor-pointer transition-colors duration-200' />
 
             </div>
 
             <div className='p-4 flex justify-end items-center'>
 
-              <button className='min-w-[100px] h-12 px-6 rounded-2xl bg-blue-600 text-white shadow-md hover:bg-blue-700 hover:shadow-lg cursor-pointer transition-all duration-200 font-medium disabled:opacity-60' disabled={posting} onClick={handleuploadPost}>
+              <button className='min-w-[100px] h-12 px-6 rounded-2xl bg-brand text-white shadow-md hover:bg-brand-dark hover:shadow-lg cursor-pointer transition-all duration-200 font-medium disabled:opacity-60' disabled={posting} onClick={handleuploadPost}>
 
                 {posting ? "Posting..." : "Post"}
 
@@ -176,7 +181,7 @@ function Home() {
 
         <div className='rounded-3xl w-full bg-white/70 backdrop-blur-md shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-white/60 relative overflow-hidden transition-all hover:bg-white/80 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] duration-300'>
 
-          <div className='w-full h-[120px] bg-gradient-to-r from-blue-500 to-indigo-500 rounded-t-3xl overflow-hidden flex items-center justify-center cursor-pointer relative'>
+          <div className='w-full h-[120px] bg-gradient-to-r from-brand to-accent rounded-t-3xl overflow-hidden flex items-center justify-center cursor-pointer relative'>
 
             <img src={userdata.coverImage} alt="" className='w-full h-full object-cover opacity-90' />
 
@@ -190,7 +195,7 @@ function Home() {
 
           </div>
 
-          <div className='w-7 h-7 bg-blue-600 cursor-pointer absolute top-[135px] left-[75px] rounded-full flex justify-center items-center shadow-md ring-4 ring-white/80 hover:bg-blue-700 transition-colors duration-200'>
+          <div className='w-7 h-7 bg-brand cursor-pointer absolute top-[135px] left-[75px] rounded-full flex justify-center items-center shadow-md ring-4 ring-white/80 hover:bg-brand-dark transition-colors duration-200'>
 
             <FiPlus className='text-white w-4 h-4' onClick={() => setedit(true)} />
 
@@ -242,81 +247,67 @@ function Home() {
 
         {/* POSTS */}
 
-        {postdata.map((post, index) => (
-
-          <Post
-
-            key={index}
-
-            id={post._id}
-
-            description={post.description}
-
-            author={post.author}
-
-            image={post.image}
-
-            like={post.likes}
-
-            comment={post.comments}
-
-            createdAt={post.createdAt}
-
-          />
-
-        ))}
+        {postdata.length > 0 ? (
+          postdata.map((post, index) => (
+            <Post
+              key={index}
+              id={post._id}
+              description={post.description}
+              author={post.author}
+              image={post.image}
+              like={post.likes}
+              comment={post.comments}
+              createdAt={post.createdAt}
+            />
+          ))
+        ) : (
+          <div className='w-full bg-white/70 backdrop-blur-md shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-white/60 rounded-3xl flex flex-col items-center justify-center p-10 text-center gap-4 hover:bg-white/80 transition-all duration-300'>
+            <div className='w-16 h-16 rounded-full bg-brand-light flex items-center justify-center text-brand shadow-sm border border-brand-light/50'>
+              <FiFileText className='w-8 h-8' />
+            </div>
+            <div>
+              <h3 className='text-lg font-bold text-gray-900 mb-1'>Feed is empty</h3>
+              <p className='text-sm text-gray-500 max-w-sm'>
+                No posts to show right now. Share something with the community or check back later!
+              </p>
+            </div>
+          </div>
+        )}
 
       </div>
 
 
-      {/* SUGGESTIONS */}
+      {/* SIDEBAR COLUMN */}
+      <div className='w-full lg:w-[25%] hidden lg:flex flex-col gap-6 mb-6'>
+        
 
-      <div className='w-full lg:w-[25%] min-h-[200px] bg-white/70 backdrop-blur-md border border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.08)] rounded-3xl hidden lg:flex flex-col mb-6 hover:bg-white/80 transition-all duration-300'>
 
-        <div className='p-6'>
-
-          {suggestedUsers.length > 0 &&
-
-            <div className='mb-5 text-gray-900 font-bold text-[15px] px-1 uppercase tracking-wider'>
-
-              People you may know
-
-            </div>
-
-          }
-
-          <div className='flex flex-col gap-3'>
-            {suggestedUsers.length > 0 && suggestedUsers.map((user) => (
-
-              <div className='flex rounded-2xl items-center gap-4 p-3 cursor-pointer hover:bg-white/60 hover:shadow-sm border border-transparent hover:border-white/80 transition-all duration-200 group' onClick={() => handleGetProfile(user?.username)}>
-
-                <div className='w-12 h-12 rounded-full overflow-hidden ring-2 ring-white/60 shadow-sm flex-shrink-0 group-hover:ring-blue-400 transition-colors'>
-
-                  <img src={user.profileImage || profile} alt="" className='w-full h-full object-cover' />
-
-                </div>
-
-                <div className='flex flex-col items-start justify-center min-w-0'>
-
-                  <div className='text-gray-900 font-semibold text-[15px] truncate w-full'>
-
-                    {`${user?.firstname} ${user?.lastname}`}
-
-                  </div>
-
-                  <div className='text-[13px] text-gray-500 truncate w-full'>
-
-                    {`${user?.headline}`}
-
-                  </div>
-
-                </div>
-
+        {/* SUGGESTIONS CARD */}
+        <div className='w-full min-h-[200px] bg-white/70 backdrop-blur-md border border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.08)] rounded-3xl flex flex-col hover:bg-white/80 transition-all duration-300'>
+          <div className='p-6'>
+            {suggestedUsers.length > 0 &&
+              <div className='mb-5 text-gray-900 font-bold text-[15px] px-1 uppercase tracking-wider'>
+                People you may know
               </div>
-
-            ))}
+            }
+            <div className='flex flex-col gap-3'>
+              {suggestedUsers.length > 0 && suggestedUsers.map((user) => (
+                <div key={user._id} className='flex rounded-2xl items-center gap-4 p-3 cursor-pointer hover:bg-white/60 hover:shadow-sm border border-transparent hover:border-white/80 transition-all duration-200 group' onClick={() => handleGetProfile(user?.username)}>
+                  <div className='w-12 h-12 rounded-full overflow-hidden ring-2 ring-white/60 shadow-sm flex-shrink-0 group-hover:ring-brand transition-colors'>
+                    <img src={user.profileImage || profile} alt="" className='w-full h-full object-cover' />
+                  </div>
+                  <div className='flex flex-col items-start justify-center min-w-0'>
+                    <div className='text-gray-900 font-semibold text-[15px] truncate w-full'>
+                      {`${user?.firstname} ${user?.lastname}`}
+                    </div>
+                    <div className='text-[13px] text-gray-500 truncate w-full'>
+                      {`${user?.headline}`}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-
         </div>
 
       </div>

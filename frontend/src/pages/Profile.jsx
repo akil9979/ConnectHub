@@ -34,7 +34,7 @@ function Profile() {
 
 
                 <div className='rounded-3xl w-full min-h-[300px] bg-white/70 backdrop-blur-md shadow-md border border-white/40 relative overflow-hidden' >
-                    <div className='w-full h-[100px] bg-gradient-to-r from-blue-600 to-indigo-600 rounded-t-xl overflow-hidden flex items-center justify-center cursor-pointer'>
+                    <div className='w-full h-[100px] bg-gradient-to-r from-brand to-accent rounded-t-xl overflow-hidden flex items-center justify-center cursor-pointer'>
                         <img src={profiledata.coverImage} alt="" className='w-full h-full object-cover opacity-90' />
                         {userdata._id == profiledata._id && <MdOutlineCameraAlt className='absolute top-5 right-4 h-6 w-6 text-white drop-shadow-md' onClick={() => setedit(true)} />}
 
@@ -42,7 +42,7 @@ function Profile() {
                     <div className='w-[70px] h-[70px] rounded-full flex justify-center items-center overflow-hidden absolute top-[50px] left-6 cursor-pointer ring-4 ring-white shadow-sm'>
                         <img src={profiledata.profileImage || profile} alt="" className='w-full h-full object-cover' />
                     </div>
-                    {userdata._id == profiledata._id && <div className='w-5 h-5 bg-blue-600 cursor-pointer absolute top-[92px] left-[5.25rem] rounded-full flex justify-center items-center shadow-md ring-2 ring-white hover:bg-blue-700 transition-colors duration-200'>
+                    {userdata._id == profiledata._id && <div className='w-5 h-5 bg-brand cursor-pointer absolute top-[92px] left-[5.25rem] rounded-full flex justify-center items-center shadow-md ring-2 ring-white hover:bg-brand-dark transition-colors duration-200'>
                         <FiPlus className='text-white w-3 h-3' onClick={() => setedit(true)} />
                     </div>}
 
@@ -52,7 +52,7 @@ function Profile() {
                         <div className='text-base text-gray-600 mt-1'>{profiledata.headline}</div>
                         <div className='text-sm text-gray-500'>{profiledata.location}</div>
                         <div className='text-sm text-gray-500 mt-1'>{profiledata?.connections?.length} connections</div>
-                        {userdata._id == profiledata._id && <button className=' min-w-[150px] h-10 rounded-xl border border-blue-600 text-blue-600 shadow-sm hover:bg-blue-600 hover:text-white my-4 flex justify-center items-center gap-2 font-medium transition-all duration-200' onClick={() => setedit(true)}>Edit profile  <HiPencil className='w-4 h-4' /> </button>}
+                        {userdata._id == profiledata._id && <button className=' min-w-[150px] h-10 rounded-xl border border-brand text-brand shadow-sm hover:bg-brand hover:text-white my-4 flex justify-center items-center gap-2 font-medium transition-all duration-200' onClick={() => setedit(true)}>Edit profile  <HiPencil className='w-4 h-4' /> </button>}
                         {userdata._id != profiledata._id && <ConnectionButton userId={profiledata._id} />}
 
                     </div>
@@ -62,28 +62,28 @@ function Profile() {
 
                     <div
                         onClick={() => setActiveTab("posts")}
-                        className={`cursor-pointer py-2 px-6 rounded-full transition-all duration-200 ${activeTab === "posts" ? "text-white bg-blue-600 shadow-md" : "hover:text-gray-900 hover:bg-white/50"}`}
+                        className={`cursor-pointer py-2 px-6 rounded-full transition-all duration-200 ${activeTab === "posts" ? "text-white bg-brand shadow-md" : "hover:text-gray-900 hover:bg-white/50"}`}
                     >
                         Posts
                     </div>
 
                     <div
                         onClick={() => setActiveTab("skills")}
-                        className={`cursor-pointer py-2 px-6 rounded-full transition-all duration-200 ${activeTab === "skills" ? "text-white bg-blue-600 shadow-md" : "hover:text-gray-900 hover:bg-white/50"}`}
+                        className={`cursor-pointer py-2 px-6 rounded-full transition-all duration-200 ${activeTab === "skills" ? "text-white bg-brand shadow-md" : "hover:text-gray-900 hover:bg-white/50"}`}
                     >
                         Skills
                     </div>
 
                     <div
                         onClick={() => setActiveTab("education")}
-                        className={`cursor-pointer py-2 px-6 rounded-full transition-all duration-200 ${activeTab === "education" ? "text-white bg-blue-600 shadow-md" : "hover:text-gray-900 hover:bg-white/50"}`}
+                        className={`cursor-pointer py-2 px-6 rounded-full transition-all duration-200 ${activeTab === "education" ? "text-white bg-brand shadow-md" : "hover:text-gray-900 hover:bg-white/50"}`}
                     >
                         Education
                     </div>
 
                     <div
                         onClick={() => setActiveTab("experience")}
-                        className={`cursor-pointer py-2 px-6 rounded-full transition-all duration-200 ${activeTab === "experience" ? "text-white bg-blue-600 shadow-md" : "hover:text-gray-900 hover:bg-white/50"}`}
+                        className={`cursor-pointer py-2 px-6 rounded-full transition-all duration-200 ${activeTab === "experience" ? "text-white bg-brand shadow-md" : "hover:text-gray-900 hover:bg-white/50"}`}
                     >
                         Experience
                     </div>
@@ -105,11 +105,11 @@ function Profile() {
                     <div className='flex flex-col gap-6'>
                         <div className='mt-2 flex flex-wrap items-center justify-start gap-3'>
                             {profiledata?.skills?.map((skill) => (
-                                <div className='text-base px-3 py-1.5 rounded-lg bg-indigo-50 text-indigo-800 border border-indigo-100'>{skill}</div>
+                                <div className='text-base px-3 py-1.5 rounded-lg bg-accent-light text-accent-dark border border-accent-light'>{skill}</div>
                             ))
                             }
                         </div>
-                        {userdata._id == profiledata._id && <button className=' min-w-[150px] h-9 rounded-xl border border-blue-600 text-blue-600 shadow-sm hover:bg-blue-600 hover:text-white my-4 text-sm flex justify-center items-center gap-2 font-medium transition-all duration-200' onClick={() => setedit(true)}>Add Skill </button>}
+                        {userdata._id == profiledata._id && <button className=' min-w-[150px] h-9 rounded-xl border border-brand text-brand shadow-sm hover:bg-brand hover:text-white my-4 text-sm flex justify-center items-center gap-2 font-medium transition-all duration-200' onClick={() => setedit(true)}>Add Skill </button>}
 
 
                     </div>
@@ -128,7 +128,7 @@ function Profile() {
                                 </div>
                             ))
                             }
-                            {userdata._id == profiledata._id && <button className=' min-w-[150px] h-9 rounded-xl border border-blue-600 text-sm cursor-pointer text-blue-600 shadow-sm hover:bg-blue-600 hover:text-white my-4 flex justify-center items-center gap-2 font-medium transition-all duration-200' onClick={() => setedit(true)}>Add Education </button>}
+                            {userdata._id == profiledata._id && <button className=' min-w-[150px] h-9 rounded-xl border border-brand text-sm cursor-pointer text-brand shadow-sm hover:bg-brand hover:text-white my-4 flex justify-center items-center gap-2 font-medium transition-all duration-200' onClick={() => setedit(true)}>Add Education </button>}
                         </div>
 
                     </div>
@@ -147,7 +147,7 @@ function Profile() {
                                 </div>
                             ))
                             }
-                            {userdata._id == profiledata._id && <button className=' min-w-[150px] h-9 text-sm rounded-xl border border-blue-600 cursor-pointer text-blue-600 shadow-sm hover:bg-blue-600 hover:text-white my-4 flex justify-center items-center gap-2 font-medium transition-all duration-200' onClick={() => setedit(true)}>Add Experience </button>}
+                            {userdata._id == profiledata._id && <button className=' min-w-[150px] h-9 text-sm rounded-xl border border-brand cursor-pointer text-brand shadow-sm hover:bg-brand hover:text-white my-4 flex justify-center items-center gap-2 font-medium transition-all duration-200' onClick={() => setedit(true)}>Add Experience </button>}
                         </div>
 
                     </div>

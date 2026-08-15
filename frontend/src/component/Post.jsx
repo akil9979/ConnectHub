@@ -81,7 +81,7 @@ function Post({ id, description, image, like, comment, author, createdAt }) {
             <img src={author.profileImage || profile} alt="" className='w-full h-full object-cover' />
           </div>
           <div className='min-w-0 flex flex-col justify-center'>
-            <div className='text-gray-900 font-bold text-base truncate leading-tight hover:text-blue-600 cursor-pointer transition-colors' onClick={() => handleGetProfile(author.username)}>{`${author?.firstname} ${author?.lastname}`}</div>
+            <div className='text-gray-900 font-bold text-base truncate leading-tight hover:text-brand cursor-pointer transition-colors' onClick={() => handleGetProfile(author.username)}>{`${author?.firstname} ${author?.lastname}`}</div>
             <div className='text-[13px] text-gray-500 truncate mt-0.5'>{`${author?.headline} `}</div>
             <div className='text-sm text-gray-400'>{`${moment(createdAt).fromNow()} `}</div>
           </div>
@@ -99,7 +99,7 @@ function Post({ id, description, image, like, comment, author, createdAt }) {
         </div>}
 
       <div className='py-3 w-full flex justify-between items-center border-b border-gray-100 mt-2'>
-        <div className='flex justify-center items-center gap-1.5 text-sm text-gray-500'><AiOutlineLike className='text-blue-500 w-4 h-4' /><span>{likes.length}</span></div>
+        <div className='flex justify-center items-center gap-1.5 text-sm text-gray-500'><AiOutlineLike className='text-brand w-4 h-4' /><span>{likes.length}</span></div>
         <div className='cursor-pointer flex justify-center items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200' onClick={() => setshowComments(prev => !prev)} ><span>{comments.length}</span><span>comments</span></div>
 
       </div>
@@ -109,7 +109,7 @@ function Post({ id, description, image, like, comment, author, createdAt }) {
             <AiOutlineLike className='h-5 w-5' />
             <span className='text-sm font-medium'>Like</span>
           </div>}
-          {likes.includes(userdata._id) && <div className='flex justify-center items-center gap-2 px-3 py-2 rounded-xl cursor-pointer text-blue-600 bg-blue-50 border border-blue-100/50 hover:bg-blue-100 shadow-sm transition-all duration-200' onClick={handlelike}>
+          {likes.includes(userdata._id) && <div className='flex justify-center items-center gap-2 px-3 py-2 rounded-xl cursor-pointer text-brand bg-brand-light border border-brand-light/50 hover:bg-brand-light/80 shadow-sm transition-all duration-200' onClick={handlelike}>
             <AiFillLike className='h-5 w-5' />
             <span className='text-sm font-medium'>Liked</span>
           </div>}
@@ -119,8 +119,8 @@ function Post({ id, description, image, like, comment, author, createdAt }) {
           </div>
           <div className='flex-1 min-w-[200px] ml-auto'>
             <form className='flex relative' onSubmit={handleComment}>
-              <input type="text" placeholder='Add a comment...' onChange={(e) => setcommentContent(e.target.value)} value={commentContent} className='w-full h-10 rounded-full border border-gray-200 bg-gray-50 px-4 pr-10 text-[14px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200' />
-              <button className='absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-blue-50 text-blue-600 transition-colors'> <LuSendHorizontal className='w-4 h-4' /></button>
+              <input type="text" placeholder='Add a comment...' onChange={(e) => setcommentContent(e.target.value)} value={commentContent} className='w-full h-10 rounded-full border border-gray-200 bg-gray-50 px-4 pr-10 text-[14px] focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-all duration-200' />
+              <button className='absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-brand-light text-brand transition-colors'> <LuSendHorizontal className='w-4 h-4' /></button>
             </form>
 
           </div>

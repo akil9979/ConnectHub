@@ -2,7 +2,7 @@ import React from 'react'
 export const authdatacontext=React.createContext()
 function Authcontext({children}) {
   const value={
- serverURL : "https://connecthub-backend-wweb.onrender.com"
+ serverURL : "http://localhost:5000"
 } 
   return (
     

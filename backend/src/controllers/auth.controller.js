@@ -34,7 +34,7 @@ export const signUp = async (req, res) => {
         const accessToken= await generateaccesToken(registerUser._id)
         const refreshToken= await generateRefreshToken(registerUser._id)
         const options={
-             httpOnly: true,
+              httpOnly: true,
               secure: true,
               sameSite: "none",
               maxAge: 7 * 24 * 60 * 60 * 1000
@@ -95,9 +95,10 @@ export const LogIn = async (req, res) => {
 export const logOut=async(req,res)=>{
     try {
         const options={
-            httpOnly:true,
-            secure: process.env.NODE_ENV === "production",
-        }
+    httpOnly:true,
+    secure:true,
+    sameSite:"none"
+}
         return res
         .status(200)
         .clearCookie("refreshToken",options)
