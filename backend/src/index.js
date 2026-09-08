@@ -19,16 +19,21 @@ export const io = new Server(server, {
   allowEIO3: true // ← add this
 });
 export const userSocketMap=new Map()
-io.on("connection",(socket)=>{
-    
-    socket.on("register",(userId)=>{
-        userSocketMap.set(userId,socket.id)
-        console.log(userSocketMap);
-        
-    })
-    socket.on("disconnect",()=>{})
+io.on("connection", (socket) => {
+    let currentUserId = null;
+    socket.on("register", (userId) => {
+        if (userId) {
+            currentUserId = userId.toString();
+            userSocketMap.set(currentUserId, socket.id);
+        }
+    });
 
-})
+    socket.on("disconnect", () => {
+        if (currentUserId && userSocketMap.get(currentUserId) === socket.id) {
+            userSocketMap.delete(currentUserId);
+        }
+    });
+});
 connectDB()
 .then(()=>{
     server.listen(process.env.PORT, () => {

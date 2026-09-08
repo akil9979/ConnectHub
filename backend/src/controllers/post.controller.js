@@ -33,7 +33,6 @@ export const getPost=async (req,res) => {
         .populate("comments.user","firstname lastname profileImage headline").sort({createdAt:-1})
         return res.status(200).json({message:"post get succesfully",post})
     } catch (error) {
-        console.log(error);
         return res.status(400).json({message:"post get error"})
     }
 }
@@ -100,7 +99,6 @@ export const comment=async (req,res) => {
         return res.status(200).json({message:"comment added successfully",post})
 
     } catch (error) {
-        console.log("COMMENT ERROR:", error)
         return res.status(400).json({message:"comment post error"})
     }
 }

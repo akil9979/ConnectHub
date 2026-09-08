@@ -209,7 +209,6 @@ export const getConnectionRequest = async (req, res) => {
         }).populate("sender", "firstname lastname email username profileImage headline")
         return res.status(200).json({ requests: request })
     } catch (error) {
-        console.error("Error in getConnectionRequest:", error);
         return res.status(400).json({ message: "get connections error" })
     }
 }

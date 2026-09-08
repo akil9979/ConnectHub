@@ -46,10 +46,7 @@ export const signUp = async (req, res) => {
         .json({ message: "user sigup succesfully", registerUser })
 
     } catch (error) {
-        console.log(error);
-
         return res.status(500).json({ message: "internal server error" })
-
     }
 
 }
@@ -86,19 +83,17 @@ export const LogIn = async (req, res) => {
         .json({ message: "user login succesfully",user })
 
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: "internal server error" })
-
     }
 }
 
 export const logOut=async(req,res)=>{
     try {
         const options={
-    httpOnly:true,
-    secure:true,
-    sameSite:"none"
-}
+            httpOnly:true,
+            secure:true,
+            sameSite:"none"
+        }
         return res
         .status(200)
         .clearCookie("refreshToken",options)
@@ -106,8 +101,6 @@ export const logOut=async(req,res)=>{
         .json({ message: "user logout succesfully" })
 
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: "internal server error" })
-
     }
 }

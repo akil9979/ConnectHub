@@ -24,26 +24,22 @@ export const updateProfile=async(req,res)=>{
         let experience=req.body.experience?JSON.parse(req.body.experience):[]
         let profileImage
         let coverImage
-        console.log(req.files);
-        
-        if (req.files.profileImage) {
-            profileImage=await uploadOnCloudinary(req.files.profileImage[0]?.path)
+        if (req.files?.profileImage) {
+            profileImage = await uploadOnCloudinary(req.files.profileImage[0]?.path)
         }
-        if (req.files.coverImage) {
-            coverImage=await uploadOnCloudinary(req.files.coverImage[0]?.path)
+        if (req.files?.coverImage) {
+            coverImage = await uploadOnCloudinary(req.files.coverImage[0]?.path)
         }
 
-        const user= await User.findByIdAndUpdate(req.user._id,{
-            firstname,lastname,headline,username,location,gender,skills,education,experience,
-            profileImage,coverImage
-        },{new:true}).select("-password")
+        const user = await User.findByIdAndUpdate(req.user._id, {
+            firstname, lastname, headline, username, location, gender, skills, education, experience,
+            profileImage, coverImage
+        }, { new: true }).select("-password")
 
-        return res.status(200).json({message:"profile updated successfully",user})
+        return res.status(200).json({ message: "profile updated successfully", user })
 
     } catch (error) {
-        console.log(error);
-        return res.status(400).json({message:"profile update error"})
-        
+        return res.status(400).json({ message: "profile update error" })
     }
 }
 

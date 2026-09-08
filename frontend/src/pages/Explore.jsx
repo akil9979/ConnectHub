@@ -9,9 +9,10 @@ function Explore() {
 
   useEffect(() => {
     getPost()
-  }, [])
+  }, [getPost])
 
   const sortedPosts = React.useMemo(() => {
+    if (!postdata || !Array.isArray(postdata)) return []
     return [...postdata].sort((a, b) => (b.likes?.length || 0) - (a.likes?.length || 0))
   }, [postdata])
 
@@ -30,9 +31,9 @@ function Explore() {
 
       <div className='w-full max-w-[650px] flex flex-col gap-6'>
         {sortedPosts.length > 0 ? (
-          sortedPosts.map((post, index) => (
+          sortedPosts.map((post) => (
             <Post
-              key={index}
+              key={post._id}
               id={post._id}
               description={post.description}
               author={post.author}
