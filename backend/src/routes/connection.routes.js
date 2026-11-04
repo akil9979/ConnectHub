@@ -2,6 +2,7 @@ import { Router } from "express";
 import { acceptConnection,
      getConnectionRequest,
       getConnectionStatus,
+      getSentConnectionRequests,
        getUserConnections,
        rejectConnection,
         removeConnection,
@@ -17,5 +18,6 @@ router.get("/getStatus/:userId",auth,getConnectionStatus)
 router.delete("/remove/:userId",auth,removeConnection)
 router.delete("/withdraw/:userId",auth,withdrawConnection)
 router.get("/requests",auth,getConnectionRequest)
+router.get("/sent-requests",auth,getSentConnectionRequests)
 router.get("/",auth,getUserConnections)
 export default router;

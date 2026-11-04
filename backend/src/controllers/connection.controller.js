@@ -245,6 +245,19 @@ export const getConnectionRequest = async (req, res) => {
     }
 }
 
+export const getSentConnectionRequests = async (req, res) => {
+    try {
+        const userId = req.user._id
+        const sent = await Connection.find({
+            sender: userId,
+            status: "pending"
+        }).populate("receiver", "firstname lastname email username profileImage headline")
+        return res.status(200).json({ sentRequests: sent })
+    } catch (error) {
+        return res.status(400).json({ message: "get sent connections error" })
+    }
+}
+
 export const getUserConnections = async (req, res) => {
     try {
         const userId = req.user._id
