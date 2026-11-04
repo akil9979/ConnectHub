@@ -4,6 +4,7 @@ import axios from 'axios'
 import { authdatacontext } from '../context/AuthContext.jsx'
 import profile from '../assets/profile.webp'
 import ConnectionButton from '../component/ConnectionButton'
+import WithdrawConnectionButton from '../component/WithdrawConnectionButton'
 import { FaUserFriends } from 'react-icons/fa'
 import logger from '../utils/logger'
 
@@ -11,6 +12,7 @@ function Network() {
   const { serverURL } = useContext(authdatacontext)
   const [requests, setRequests] = useState([])
   const [suggestedUsers, setSuggestedUsers] = useState([])
+  const [connections, setConnections] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
@@ -18,9 +20,10 @@ function Network() {
     setLoading(true)
     setError(null)
     try {
-      const [reqRes, sugRes] = await Promise.allSettled([
+      const [reqRes, sugRes, connRes] = await Promise.allSettled([
         axios.get(`${serverURL}/api/v1/connection/requests`, { withCredentials: true }),
         axios.get(`${serverURL}/api/v1/user/suggestedUsers`, { withCredentials: true }),
+        axios.get(`${serverURL}/api/v1/connection/`, { withCredentials: true }),
       ])
 
       if (reqRes.status === 'fulfilled' && reqRes.value.data?.requests) {
@@ -31,9 +34,18 @@ function Network() {
         setSuggestedUsers(sugRes.value.data.getSuggestedUsers)
       }
 
-      if (reqRes.status === 'rejected' && sugRes.status === 'rejected') {
+      if (connRes.status === 'fulfilled') {
+        const connData = connRes.value.data
+        if (Array.isArray(connData)) {
+          setConnections(connData)
+        } else if (Array.isArray(connData?.connections)) {
+          setConnections(connData.connections)
+        }
+      }
+
+      if (reqRes.status === 'rejected' && sugRes.status === 'rejected' && connRes.status === 'rejected') {
         setError('Unable to load network data at this time.')
-        logger.error('Failed to load network and suggestions:', reqRes.reason)
+        logger.error('Failed to load network data:', reqRes.reason || sugRes.reason || connRes.reason)
       }
     } catch (err) {
       setError('An unexpected error occurred while loading network.')
@@ -46,7 +58,11 @@ function Network() {
   const handleAcceptRequest = async (requestId) => {
     try {
       await axios.put(`${serverURL}/api/v1/connection/accept/${requestId}`, {}, { withCredentials: true })
+      const acceptedRequest = requests.find(request => request._id === requestId)
       setRequests(prev => prev.filter(request => request._id !== requestId))
+      if (acceptedRequest?.sender) {
+        setConnections(prev => [acceptedRequest.sender, ...prev])
+      }
     } catch (err) {
       logger.error('Error accepting connection request:', err)
     }
@@ -65,7 +81,7 @@ function Network() {
     fetchData()
   }, [])
 
-  const hasContent = requests.length > 0 || suggestedUsers.length > 0
+  const hasContent = requests.length > 0 || suggestedUsers.length > 0 || connections.length > 0
 
   return (
     <div className='w-screen min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-100 pt-24 flex flex-col items-center gap-6 px-4 pb-10'>
@@ -99,7 +115,7 @@ function Network() {
           <div>
             <h3 className='text-lg font-bold text-gray-900 mb-1'>Your network is quiet</h3>
             <p className='text-sm text-gray-500 max-w-sm'>
-              No connection requests or suggestions available right now. Keep searching to find people you know!
+              No connection requests, suggestions, or connections available right now. Keep searching to find people you know!
             </p>
           </div>
         </div>
@@ -131,6 +147,30 @@ function Network() {
             </div>
           )}
 
+          {/* Connections Section */}
+          {connections.length > 0 && (
+            <div className='w-full max-w-[600px] mt-4'>
+              <div className='w-full min-h-[70px] bg-white/70 backdrop-blur-md shadow-md border border-white/40 rounded-2xl flex items-center p-6 text-lg font-semibold text-gray-900 mb-4'>
+                My Connections ({connections.length})
+              </div>
+              <div className='w-full flex flex-col gap-4'>
+                {connections.map((user) => (
+                  <div key={user._id} className='w-full bg-white/70 backdrop-blur-sm border border-white/40 rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-between gap-4 p-4'>
+                    <div className='flex justify-center items-center gap-3 min-w-0'>
+                      <div className='w-[60px] h-[60px] rounded-full flex justify-center items-center overflow-hidden cursor-pointer ring-2 ring-gray-100 flex-shrink-0'>
+                        <img src={user.profileImage || profile} alt="" className='w-full h-full object-cover' />
+                      </div>
+                      <div className='flex flex-col min-w-0'>
+                        <div className='text-gray-900 font-semibold text-base truncate'>{`${user?.firstname || ''} ${user?.lastname || ''}`}</div>
+                        <div className='text-gray-500 text-sm truncate'>{user?.headline || ''}</div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Suggestions Section */}
           {suggestedUsers.length > 0 && (
             <div className='w-full max-w-[600px] mt-4'>
@@ -149,8 +189,9 @@ function Network() {
                         <div className='text-gray-500 text-sm truncate'>{user?.headline || ''}</div>
                       </div>
                     </div>
-                    <div className='flex-shrink-0'>
+                    <div className='flex items-center gap-2 flex-shrink-0'>
                       <ConnectionButton userId={user._id} />
+                      <WithdrawConnectionButton userId={user._id} />
                     </div>
                   </div>
                 ))}

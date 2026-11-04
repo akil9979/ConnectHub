@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState, useRef } from 'react'
 import { IoSearch } from "react-icons/io5";
 import { IoHomeSharp } from "react-icons/io5";
 import { HiUserGroup } from "react-icons/hi";
@@ -17,6 +17,7 @@ function Nav() {
   const [showPopup, setshowPopup] = useState(false)
   const [searchQuery, setsearchQuery] = useState("")
   const [searchResults, setsearchResults] = useState([])
+  const searchRef = useRef(null)
   const navigate = useNavigate()
 
   const handleSignOut = async () => {
@@ -46,6 +47,20 @@ function Nav() {
     }
   }, [searchQuery])
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setsearchResults([])
+        setsearchQuery("")
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [])
+
   return (
     <div className='w-full h-16 bg-gray-700/90 backdrop-blur-md border-b border-gray-800 shadow-sm fixed top-0 left-0 z-[80] flex justify-between md:justify-around items-center px-4 transition-all'>
       <div className='flex items-center justify-center gap-6'>
@@ -55,39 +70,41 @@ function Nav() {
           </h1>
         </div>
 
-        {searchResults?.length > 0 && (
-          <div className='absolute top-[70px] min-h-[80px] h-[500px] overflow-auto shadow-lg rounded-3xl border border-gray-700 lg:left-[50px] left-4 p-4 w-[calc(100%-32px)] lg:w-[500px] bg-gray-900/95 backdrop-blur-xl flex flex-col gap-2 z-[100]'>
-            {searchResults.map((sea) => (
-              <div 
-                key={sea._id}
-                onClick={() => {
-                  setsearchResults([])
-                  setsearchQuery("")
-                  handleGetProfile(sea?.username)
-                }} 
-                className='flex rounded-xl items-center gap-3 p-3 hover:bg-gray-800 cursor-pointer transition-all duration-300'
-              >
-                <div className='w-12 h-12 rounded-full overflow-hidden ring-1 ring-gray-700 flex-shrink-0'>
-                  <img src={sea.profileImage || profile} alt="" className='w-full h-full object-cover' />
+        <div ref={searchRef} className="flex items-center">
+          {searchResults?.length > 0 && (
+            <div className='absolute top-[70px] min-h-[80px] h-[500px] overflow-auto shadow-lg rounded-3xl border border-gray-700 lg:left-[50px] left-4 p-4 w-[calc(100%-32px)] lg:w-[500px] bg-gray-900/95 backdrop-blur-xl flex flex-col gap-2 z-[100]'>
+              {searchResults.map((sea) => (
+                <div 
+                  key={sea._id}
+                  onClick={() => {
+                    setsearchResults([])
+                    setsearchQuery("")
+                    handleGetProfile(sea?.username)
+                  }} 
+                  className='flex rounded-xl items-center gap-3 p-3 hover:bg-gray-800 cursor-pointer transition-all duration-300'
+                >
+                  <div className='w-12 h-12 rounded-full overflow-hidden ring-1 ring-gray-700 flex-shrink-0'>
+                    <img src={sea.profileImage || profile} alt="" className='w-full h-full object-cover' />
+                  </div>
+                  <div className='flex flex-col items-start justify-center min-w-0'>
+                    <div className='text-white font-medium text-base truncate w-full'>{`${sea?.firstname || ''} ${sea?.lastname || ''}`}</div>
+                    <div className='text-gray-400 text-sm truncate w-full'>{sea?.headline || ''}</div>
+                  </div>
                 </div>
-                <div className='flex flex-col items-start justify-center min-w-0'>
-                  <div className='text-white font-medium text-base truncate w-full'>{`${sea?.firstname || ''} ${sea?.lastname || ''}`}</div>
-                  <div className='text-gray-400 text-sm truncate w-full'>{sea?.headline || ''}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+              ))}
+            </div>
+          )}
 
-        <div className="relative flex items-center hidden sm:flex">
-          <div className='absolute left-4 text-gray-400'><IoSearch className='w-4 h-4' /></div>
-          <input 
-            type="text" 
-            placeholder='Search...' 
-            onChange={(e) => setsearchQuery(e.target.value)} 
-            value={searchQuery} 
-            className='pl-11 w-[200px] lg:w-[320px] px-4 py-2 rounded-full border border-gray-700 bg-gray-700 text-sm text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand hover:bg-gray-700 transition-all duration-300 shadow-sm backdrop-blur-sm' 
-          />
+          <div className="relative flex items-center hidden sm:flex">
+            <div className='absolute left-4 text-gray-400'><IoSearch className='w-4 h-4' /></div>
+            <input 
+              type="text" 
+              placeholder='Search...' 
+              onChange={(e) => setsearchQuery(e.target.value)} 
+              value={searchQuery} 
+              className='pl-11 w-[200px] lg:w-[320px] px-4 py-2 rounded-full border border-gray-700 bg-gray-700 text-sm text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand hover:bg-gray-700 transition-all duration-300 shadow-sm backdrop-blur-sm' 
+            />
+          </div>
         </div>
       </div>
 
