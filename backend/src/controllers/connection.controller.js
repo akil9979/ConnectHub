@@ -200,6 +200,38 @@ export const removeConnection = async (req, res) => {
     }
 }
 
+export const withdrawConnection = async (req, res) => {
+    try {
+        const myId = req.user._id
+        const targetUserId = req.params.userId
+        const connection = await Connection.findOneAndDelete({
+            sender: myId,
+            receiver: targetUserId,
+            status: "pending"
+        })
+
+        const receiverSocketId = userSocketMap.get(targetUserId)
+        const senderSocketId = userSocketMap.get(myId)
+
+        if (receiverSocketId) {
+            io.to(receiverSocketId).emit("statusUpdate", {
+                updatedUserId: myId,
+                newStatus: "connect",
+            })
+        }
+        if (senderSocketId) {
+            io.to(senderSocketId).emit("statusUpdate", {
+                updatedUserId: targetUserId,
+                newStatus: "connect",
+            })
+        }
+        return res.status(200).json({ message: "connection request withdrawn successfully" })
+
+    } catch (error) {
+        return res.status(400).json({ message: "withdraw connection error" })
+    }
+}
+
 export const getConnectionRequest = async (req, res) => {
     try {
         const userId = req.user._id

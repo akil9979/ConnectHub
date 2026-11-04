@@ -5,6 +5,7 @@ import { acceptConnection,
        getUserConnections,
        rejectConnection,
         removeConnection,
+        withdrawConnection,
          sendConnection } from "../controllers/connection.controller.js";
 import { auth } from "../middlewares/auth.mmiddleware.js";
 
@@ -14,6 +15,7 @@ router.put("/accept/:connectionId",auth,acceptConnection)
 router.put("/reject/:connectionId",auth,rejectConnection)
 router.get("/getStatus/:userId",auth,getConnectionStatus)
 router.delete("/remove/:userId",auth,removeConnection)
+router.delete("/withdraw/:userId",auth,withdrawConnection)
 router.get("/requests",auth,getConnectionRequest)
 router.get("/",auth,getUserConnections)
 export default router;
