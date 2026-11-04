@@ -10,6 +10,10 @@ import Network from './pages/Network'
 import Profile from './pages/Profile'
 import Notification from './pages/Notification'
 import LoadingScreen from './component/LoadingScreen'
+import About from './pages/About'
+import Accessibility from './pages/Accessibility'
+import Help from './pages/Help'
+import Privacy from './pages/Privacy'
 
 function App() {
   const { userdata, authLoading } = useContext(userDatacontext)
@@ -29,6 +33,12 @@ function App() {
       <Route path='/login' element={userdata ? <Navigate to="/" replace /> : <Login />} />
       <Route path='/signUp' element={userdata ? <Navigate to="/" replace /> : <SignUp />} />
       <Route path='/signup' element={userdata ? <Navigate to="/" replace /> : <SignUp />} />
+
+      {/* Informational Routes: Accessible to everyone */}
+      <Route path='/about' element={<About />} />
+      <Route path='/accessibility' element={<Accessibility />} />
+      <Route path='/help' element={<Help />} />
+      <Route path='/privacy' element={<Privacy />} />
 
       {/* Protected Routes: Require authenticated session */}
       <Route path='/Network' element={userdata ? <Network /> : <Navigate to="/login" replace />} />

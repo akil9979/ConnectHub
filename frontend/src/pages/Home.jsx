@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useRef, useState, useCallback } from 'react'
+import { Link } from 'react-router-dom'
 import Nav from '../component/Nav'
 import profile from '../assets/profile.webp'
 import { FiPlus, FiFileText } from "react-icons/fi";
@@ -76,7 +77,7 @@ function Home() {
   }
 
   return (
-    <div className='w-full min-h-[100vh] flex flex-col lg:flex-row justify-center items-center lg:items-start gap-6 relative pt-24 px-4 pb-20 sm:px-10 lg:px-20 bg-transparent'>
+    <div className='w-full min-h-[100vh] grid grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)_320px] gap-6 items-start relative pt-24 px-4 pb-20 sm:px-10 lg:px-12 xl:px-20 bg-transparent max-w-[1440px] mx-auto'>
       {edit && <Editprofile />}
 
       <Nav />
@@ -129,36 +130,38 @@ function Home() {
         </div>
       )}
 
-      {/* FEED COLUMN */}
-      <div className='w-full lg:w-[50%] min-h-[200px] bg-transparent flex flex-col gap-6'>
-        {/* PROFILE CARD */}
+      {/* LEFT COLUMN (Profile Rail) */}
+      <div className='w-full hidden lg:flex flex-col gap-6 sticky top-24 self-start'>
         <div className='rounded-3xl w-full bg-white/70 backdrop-blur-md shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-white/60 relative overflow-hidden transition-all hover:bg-white/80 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] duration-300'>
-          <div className='w-full h-[120px] bg-gradient-to-r from-brand to-accent rounded-t-3xl overflow-hidden flex items-center justify-center cursor-pointer relative'>
+          <div className='w-full h-[84px] bg-gradient-to-r from-brand to-accent rounded-t-3xl overflow-hidden flex items-center justify-center cursor-pointer relative'>
             {userdata?.coverImage && <img src={userdata.coverImage} alt="" className='w-full h-full object-cover opacity-90' />}
-            <MdOutlineCameraAlt className='absolute top-5 right-4 h-6 w-6 text-white drop-shadow-md' onClick={() => setedit(true)} />
+            <MdOutlineCameraAlt className='absolute top-3 right-3 h-5 w-5 text-white drop-shadow-md' onClick={() => setedit(true)} />
           </div>
 
-          <div className='w-[80px] h-[80px] rounded-full flex justify-center items-center overflow-hidden absolute top-[80px] left-5 cursor-pointer ring-4 ring-white/80 bg-white shadow-sm'>
+          <div className='w-[72px] h-[72px] rounded-full flex justify-center items-center overflow-hidden absolute top-[48px] left-5 cursor-pointer ring-4 ring-white/80 bg-white shadow-sm'>
             <img src={userdata?.profileImage || profile} alt="" className='w-full h-full object-cover' />
           </div>
 
-          <div className='w-7 h-7 bg-brand cursor-pointer absolute top-[135px] left-[75px] rounded-full flex justify-center items-center shadow-md ring-4 ring-white/80 hover:bg-brand-dark transition-colors duration-200'>
-            <FiPlus className='text-white w-4 h-4' onClick={() => setedit(true)} />
+          <div className='w-6 h-6 bg-brand cursor-pointer absolute top-[92px] left-[65px] rounded-full flex justify-center items-center shadow-md ring-2 ring-white hover:bg-brand-dark transition-colors duration-200'>
+            <FiPlus className='text-white w-3.5 h-3.5' onClick={() => setedit(true)} />
           </div>
 
-          <div className='mt-16 p-6 pt-0 flex flex-col'>
-            <div className='text-gray-900 font-bold text-xl'>{`${userdata?.firstname || ''} ${userdata?.lastname || ''}`}</div>
-            <div className='text-sm text-gray-500 mt-1 font-medium'>{userdata?.headline || ''}</div>
-            <div className='text-xs text-gray-400 mt-1 uppercase tracking-wider font-semibold'>{userdata?.location || ''}</div>
+          <div className='mt-11 p-5 pt-0 flex flex-col'>
+            <div className='text-gray-900 font-bold text-lg truncate'>{`${userdata?.firstname || ''} ${userdata?.lastname || ''}`}</div>
+            <div className='text-xs text-gray-500 mt-1 font-medium line-clamp-2'>{userdata?.headline || ''}</div>
+            <div className='text-[11px] text-gray-400 mt-1 uppercase tracking-wider font-semibold truncate'>{userdata?.location || ''}</div>
 
-            <div className='flex items-center justify-start mt-6'>
-              <button className='w-full sm:w-[150px] h-10 rounded-2xl bg-white/60 text-gray-900 border border-white/60 shadow-sm hover:bg-white hover:shadow-md flex justify-center items-center gap-2 font-medium transition-all duration-200' onClick={() => setedit(true)}>
-                Edit profile <HiPencil className='w-4 h-4' />
+            <div className='flex items-center justify-start mt-5'>
+              <button className='w-full h-9 rounded-xl bg-white/60 text-gray-900 border border-white/60 shadow-sm hover:bg-white hover:shadow-md flex justify-center items-center gap-2 text-sm font-medium transition-all duration-200 cursor-pointer' onClick={() => setedit(true)}>
+                Edit profile <HiPencil className='w-3.5 h-3.5' />
               </button>
             </div>
           </div>
         </div>
+      </div>
 
+      {/* CENTER COLUMN (Feed) */}
+      <div className='w-full min-h-[200px] bg-transparent flex flex-col gap-6'>
         {/* POST BOX */}
         <div className='w-full bg-white/70 backdrop-blur-md shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-white/60 rounded-3xl p-5 flex items-center gap-4 hover:bg-white/80 transition-all duration-300'>
           <div className='w-12 h-12 rounded-full overflow-hidden cursor-pointer ring-2 ring-white/60 shadow-sm flex-shrink-0'>
@@ -201,8 +204,8 @@ function Home() {
         )}
       </div>
 
-      {/* SIDEBAR COLUMN */}
-      <div className='w-full lg:w-[25%] hidden lg:flex flex-col gap-6 mb-6'>
+      {/* RIGHT COLUMN (Suggestions & Footer) */}
+      <div className='w-full hidden lg:flex flex-col gap-6 sticky top-24 self-start'>
         {/* SUGGESTIONS CARD */}
         <div className='w-full min-h-[200px] bg-white/70 backdrop-blur-md border border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.08)] rounded-3xl flex flex-col hover:bg-white/80 transition-all duration-300'>
           <div className='p-6'>
@@ -236,6 +239,22 @@ function Home() {
                 <div className='text-sm text-gray-400 text-center py-4'>No suggestions right now</div>
               )}
             </div>
+          </div>
+        </div>
+
+        {/* FOOTER */}
+        <div className='px-2 flex flex-col items-center text-center gap-2 text-xs text-gray-400'>
+          <div className='flex flex-wrap justify-center gap-x-2 gap-y-1 leading-relaxed'>
+            <Link to="/about" className='hover:underline hover:text-gray-600 transition-colors'>About</Link>
+            <span>·</span>
+            <Link to="/accessibility" className='hover:underline hover:text-gray-600 transition-colors'>Accessibility</Link>
+            <span>·</span>
+            <Link to="/help" className='hover:underline hover:text-gray-600 transition-colors'>Help Center</Link>
+            <span>·</span>
+            <Link to="/privacy" className='hover:underline hover:text-gray-600 transition-colors'>Privacy & Terms</Link>
+          </div>
+          <div className='text-[11px] text-gray-400 mt-1'>
+            ConnectHub Corporation © 2026
           </div>
         </div>
       </div>
