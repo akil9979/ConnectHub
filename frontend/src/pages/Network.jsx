@@ -6,7 +6,12 @@ import profile from '../assets/profile.webp'
 import ConnectionButton from '../component/ConnectionButton'
 import WithdrawConnectionButton from '../component/WithdrawConnectionButton'
 import { FaUserFriends } from 'react-icons/fa'
+import { HiCheck, HiXMark } from 'react-icons/hi2'
 import logger from '../utils/logger'
+import Avatar from '../component/ui/Avatar'
+import Button from '../component/ui/Button'
+import EmptyState from '../component/ui/EmptyState'
+import { UserCardSkeleton } from '../component/ui/Skeleton'
 
 function Network() {
   const { serverURL } = useContext(authdatacontext)
@@ -26,7 +31,7 @@ function Network() {
         axios.get(`${serverURL}/api/v1/connection/requests`, { withCredentials: true }),
         axios.get(`${serverURL}/api/v1/user/suggestedUsers`, { withCredentials: true }),
         axios.get(`${serverURL}/api/v1/connection/`, { withCredentials: true }),
-        axios.get(`${serverURL}/api/v1/connection/sent-requests`, { withCredentials: true }),
+        axios.get(`${serverURL}/api/v1/connection/sent-requests`, { withCredentials: true })
       ])
 
       if (reqRes.status === 'fulfilled' && reqRes.value.data?.requests) {
@@ -74,10 +79,10 @@ function Network() {
   const handleAcceptRequest = async (requestId) => {
     try {
       await axios.put(`${serverURL}/api/v1/connection/accept/${requestId}`, {}, { withCredentials: true })
-      const acceptedRequest = requests.find(request => request._id === requestId)
-      setRequests(prev => prev.filter(request => request._id !== requestId))
+      const acceptedRequest = requests.find((request) => request._id === requestId)
+      setRequests((prev) => prev.filter((request) => request._id !== requestId))
       if (acceptedRequest?.sender) {
-        setConnections(prev => [acceptedRequest.sender, ...prev])
+        setConnections((prev) => [acceptedRequest.sender, ...prev])
       }
     } catch (err) {
       logger.error('Error accepting connection request:', err)
@@ -87,7 +92,7 @@ function Network() {
   const handleRejectRequest = async (requestId) => {
     try {
       await axios.put(`${serverURL}/api/v1/connection/reject/${requestId}`, {}, { withCredentials: true })
-      setRequests(prev => prev.filter(request => request._id !== requestId))
+      setRequests((prev) => prev.filter((request) => request._id !== requestId))
     } catch (err) {
       logger.error('Error rejecting connection request:', err)
     }
@@ -95,8 +100,10 @@ function Network() {
 
   const handleWithdrawSentRequest = async (targetUserId, requestId) => {
     try {
-      await axios.delete(`${serverURL}/api/v1/connection/withdraw/${targetUserId}`, { withCredentials: true })
-      setSentRequests(prev => prev.filter(request => request._id !== requestId))
+      await axios.delete(`${serverURL}/api/v1/connection/withdraw/${targetUserId}`, {
+        withCredentials: true
+      })
+      setSentRequests((prev) => prev.filter((request) => request._id !== requestId))
     } catch (err) {
       logger.error('Error withdrawing sent request:', err)
     }
@@ -106,189 +113,252 @@ function Network() {
     fetchData()
   }, [])
 
-  const hasContent = requests.length > 0 || sentRequests.length > 0 || suggestedUsers.length > 0 || connections.length > 0
+  const hasContent =
+    requests.length > 0 ||
+    sentRequests.length > 0 ||
+    suggestedUsers.length > 0 ||
+    connections.length > 0
 
   return (
-    <div className='w-screen min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-100 pt-24 flex flex-col items-center gap-6 px-4 pb-10'>
+    <div className="w-full min-h-screen pt-20 pb-20 px-4 sm:px-6 flex flex-col items-center">
       <Nav />
 
-      {/* Loading Skeleton State */}
-      {loading ? (
-        <div className='w-full max-w-[600px] flex flex-col gap-4 animate-pulse'>
-          <div className='w-full h-16 bg-white/60 backdrop-blur-md rounded-2xl border border-white/40'></div>
-          <div className='w-full h-20 bg-white/60 backdrop-blur-sm rounded-2xl border border-white/40'></div>
-          <div className='w-full h-20 bg-white/60 backdrop-blur-sm rounded-2xl border border-white/40'></div>
-          <div className='w-full h-16 bg-white/60 backdrop-blur-md rounded-2xl border border-white/40 mt-4'></div>
-          <div className='w-full h-20 bg-white/60 backdrop-blur-sm rounded-2xl border border-white/40'></div>
-        </div>
-      ) : error ? (
-        <div className='w-full max-w-[600px] bg-white/70 backdrop-blur-md shadow-md border border-white/40 rounded-2xl flex flex-col items-center justify-center p-8 text-center gap-3'>
-          <p className='text-sm text-red-600 font-medium'>{error}</p>
-          <button
-            onClick={fetchData}
-            className='px-4 py-2 rounded-xl bg-brand text-white text-sm font-medium hover:bg-brand-dark transition-all'
-          >
-            Retry
-          </button>
-        </div>
-      ) : !hasContent ? (
-        /* Genuine Empty State */
-        <div className='w-full max-w-[600px] bg-white/70 backdrop-blur-md shadow-md border border-white/40 rounded-2xl flex flex-col items-center justify-center p-10 text-center gap-4 hover:bg-white/80 transition-all duration-300'>
-          <div className='w-16 h-16 rounded-full bg-brand-light flex items-center justify-center text-brand shadow-sm border border-brand-light/50'>
-            <FaUserFriends className='w-8 h-8' />
+      {/* Main Container */}
+      <div className="w-full max-w-2xl flex flex-col gap-6">
+        {/* Loading State */}
+        {loading ? (
+          <div className="flex flex-col gap-4">
+            <UserCardSkeleton />
+            <UserCardSkeleton />
+            <UserCardSkeleton />
           </div>
-          <div>
-            <h3 className='text-lg font-bold text-gray-900 mb-1'>Your network is quiet</h3>
-            <p className='text-sm text-gray-500 max-w-sm'>
-              No connection requests, suggestions, or connections available right now. Keep searching to find people you know!
-            </p>
+        ) : error ? (
+          /* Error State */
+          <div className="w-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-md shadow-sm border border-slate-200/80 dark:border-slate-800 rounded-3xl flex flex-col items-center justify-center p-8 text-center gap-4">
+            <p className="text-sm text-rose-600 font-medium">{error}</p>
+            <Button variant="primary" size="sm" onClick={fetchData}>
+              Retry
+            </Button>
           </div>
-        </div>
-      ) : (
-        /* Content Display */
-        <>
-          {/* Requests & Sent Requests Section */}
-          {(requests.length > 0 || sentRequests.length > 0) && (
-            <div className='w-full max-w-[600px]'>
-              <div className='w-full min-h-[70px] bg-white/70 backdrop-blur-md shadow-md border border-white/40 rounded-2xl flex flex-wrap items-center justify-between p-4 sm:px-6 gap-3 mb-4'>
-                <div className='text-lg font-semibold text-gray-900'>Invitations</div>
-                <div className='flex items-center gap-1.5 bg-gray-100/90 p-1 rounded-xl border border-gray-200/60'>
-                  <button
-                    onClick={() => setRequestTab('received')}
-                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all cursor-pointer ${
-                      requestTab === 'received'
-                        ? 'bg-white text-gray-900 shadow-sm'
-                        : 'text-gray-500 hover:text-gray-900'
-                    }`}
-                  >
-                    Received ({requests.length})
-                  </button>
-                  <button
-                    onClick={() => setRequestTab('sent')}
-                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all cursor-pointer ${
-                      requestTab === 'sent'
-                        ? 'bg-white text-gray-900 shadow-sm'
-                        : 'text-gray-500 hover:text-gray-900'
-                    }`}
-                  >
-                    Sent ({sentRequests.length})
-                  </button>
+        ) : !hasContent ? (
+          /* Genuine Empty State */
+          <EmptyState
+            icon={FaUserFriends}
+            title="Your network is quiet"
+            description="No connection requests, invitations, or suggestions available right now. Keep exploring to connect with engineers you know!"
+          />
+        ) : (
+          /* Content Sections */
+          <>
+            {/* Invitations Section */}
+            {(requests.length > 0 || sentRequests.length > 0) && (
+              <section aria-label="Connection invitations" className="flex flex-col gap-3">
+                {/* Section Header with Tabs */}
+                <div className="w-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-md shadow-sm border border-slate-200/80 dark:border-slate-800 rounded-2xl sm:rounded-3xl flex flex-wrap items-center justify-between p-4 sm:px-6 gap-3">
+                  <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white font-display">
+                    Invitations
+                  </h2>
+                  <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-200/60 dark:border-slate-700">
+                    <button
+                      type="button"
+                      onClick={() => setRequestTab('received')}
+                      className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
+                        requestTab === 'received'
+                          ? 'bg-white dark:bg-slate-900 text-brand shadow-xs'
+                          : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
+                      }`}
+                    >
+                      Received ({requests.length})
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setRequestTab('sent')}
+                      className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
+                        requestTab === 'sent'
+                          ? 'bg-white dark:bg-slate-900 text-brand shadow-xs'
+                          : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
+                      }`}
+                    >
+                      Sent ({sentRequests.length})
+                    </button>
+                  </div>
                 </div>
-              </div>
 
-              {requestTab === 'received' ? (
-                requests.length > 0 ? (
-                  <div className='w-full flex flex-col gap-4'>
-                    {requests.map((request) => (
-                      <div key={request._id} className='w-full bg-white/70 backdrop-blur-sm border border-white/40 rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-between gap-4 p-4'>
-                        <div className='flex justify-center items-center gap-3 min-w-0'>
-                          <div className='w-[60px] h-[60px] rounded-full flex justify-center items-center overflow-hidden cursor-pointer ring-2 ring-gray-100 flex-shrink-0'>
-                            <img src={request.sender?.profileImage || profile} alt="" className='w-full h-full object-cover' />
+                {/* Received List */}
+                {requestTab === 'received' ? (
+                  requests.length > 0 ? (
+                    <div className="flex flex-col gap-3">
+                      {requests.map((request) => (
+                        <div
+                          key={request._id}
+                          className="w-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-xs hover:shadow-md transition-all duration-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4"
+                        >
+                          <div className="flex items-center gap-3.5 min-w-0">
+                            <Avatar
+                              src={request.sender?.profileImage || profile}
+                              name={`${request?.sender?.firstname || ''} ${request?.sender?.lastname || ''}`}
+                              size="lg"
+                            />
+                            <div className="flex flex-col min-w-0">
+                              <span className="text-slate-900 dark:text-white font-bold text-sm sm:text-base truncate">
+                                {`${request?.sender?.firstname || ''} ${request?.sender?.lastname || ''}`}
+                              </span>
+                              <span className="text-xs text-slate-500 truncate">
+                                {request?.sender?.headline || 'Engineer'}
+                              </span>
+                            </div>
                           </div>
-                          <div className='flex flex-col min-w-0'>
-                            <div className='text-gray-900 font-semibold text-base truncate'>{`${request?.sender?.firstname || ''} ${request?.sender?.lastname || ''}`}</div>
-                            <div className='text-gray-500 text-sm truncate'>{request?.sender?.headline || ''}</div>
+
+                          <div className="flex items-center gap-2 self-end sm:self-auto flex-shrink-0">
+                            <Button
+                              variant="primary"
+                              size="sm"
+                              icon={HiCheck}
+                              onClick={() => handleAcceptRequest(request._id)}
+                            >
+                              Accept
+                            </Button>
+                            <Button
+                              variant="dangerOutline"
+                              size="sm"
+                              icon={HiXMark}
+                              onClick={() => handleRejectRequest(request._id)}
+                            >
+                              Reject
+                            </Button>
                           </div>
                         </div>
-                        <div className='flex gap-2 flex-shrink-0'>
-                          <button className='min-w-[100px] h-9 px-3 rounded-xl bg-brand text-white shadow-sm hover:bg-brand-dark hover:shadow-md border border-transparent cursor-pointer text-sm font-medium transition-all duration-200' onClick={() => handleAcceptRequest(request._id)}>Accept</button>
-                          <button className='min-w-[100px] h-9 px-3 rounded-xl bg-red-50 text-red-600 border border-red-100 shadow-sm hover:bg-red-100 cursor-pointer text-sm font-medium transition-all duration-200' onClick={() => handleRejectRequest(request._id)}>Reject</button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className='w-full bg-white/50 backdrop-blur-sm border border-white/40 rounded-2xl p-6 text-center text-sm text-gray-500'>
-                    No pending received requests.
-                  </div>
-                )
-              ) : (
-                sentRequests.length > 0 ? (
-                  <div className='w-full flex flex-col gap-4'>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="w-full bg-white/60 dark:bg-slate-900/60 rounded-2xl p-6 text-center text-xs sm:text-sm text-slate-500 border border-slate-200/60 dark:border-slate-800">
+                      No pending invitations received.
+                    </div>
+                  )
+                ) : sentRequests.length > 0 ? (
+                  <div className="flex flex-col gap-3">
                     {sentRequests.map((request) => (
-                      <div key={request._id} className='w-full bg-white/70 backdrop-blur-sm border border-white/40 rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-between gap-4 p-4'>
-                        <div className='flex justify-center items-center gap-3 min-w-0'>
-                          <div className='w-[60px] h-[60px] rounded-full flex justify-center items-center overflow-hidden cursor-pointer ring-2 ring-gray-100 flex-shrink-0'>
-                            <img src={request.receiver?.profileImage || profile} alt="" className='w-full h-full object-cover' />
-                          </div>
-                          <div className='flex flex-col min-w-0'>
-                            <div className='text-gray-900 font-semibold text-base truncate'>{`${request?.receiver?.firstname || ''} ${request?.receiver?.lastname || ''}`}</div>
-                            <div className='text-gray-500 text-sm truncate'>{request?.receiver?.headline || ''}</div>
+                      <div
+                        key={request._id}
+                        className="w-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-xs hover:shadow-md transition-all duration-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4"
+                      >
+                        <div className="flex items-center gap-3.5 min-w-0">
+                          <Avatar
+                            src={request.receiver?.profileImage || profile}
+                            name={`${request?.receiver?.firstname || ''} ${request?.receiver?.lastname || ''}`}
+                            size="lg"
+                          />
+                          <div className="flex flex-col min-w-0">
+                            <span className="text-slate-900 dark:text-white font-bold text-sm sm:text-base truncate">
+                              {`${request?.receiver?.firstname || ''} ${request?.receiver?.lastname || ''}`}
+                            </span>
+                            <span className="text-xs text-slate-500 truncate">
+                              {request?.receiver?.headline || 'Engineer'}
+                            </span>
                           </div>
                         </div>
-                        <div className='flex-shrink-0'>
-                          <button
-                            onClick={() => handleWithdrawSentRequest(request.receiver?._id, request._id)}
-                            className='min-w-[90px] h-9 px-3 rounded-xl border border-gray-300 text-gray-600 hover:bg-gray-50 hover:text-gray-900 cursor-pointer flex justify-center items-center text-sm font-medium transition-all duration-200 shadow-sm'
+
+                        <div className="self-end sm:self-auto flex-shrink-0">
+                          <Button
+                            variant="secondary"
+                            size="sm"
+                            onClick={() =>
+                              handleWithdrawSentRequest(request.receiver?._id, request._id)
+                            }
                           >
                             Withdraw
-                          </button>
+                          </Button>
                         </div>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <div className='w-full bg-white/50 backdrop-blur-sm border border-white/40 rounded-2xl p-6 text-center text-sm text-gray-500'>
-                    No pending sent requests.
+                  <div className="w-full bg-white/60 dark:bg-slate-900/60 rounded-2xl p-6 text-center text-xs sm:text-sm text-slate-500 border border-slate-200/60 dark:border-slate-800">
+                    No pending sent invitations.
                   </div>
-                )
-              )}
-            </div>
-          )}
+                )}
+              </section>
+            )}
 
-          {/* Connections Section */}
-          {connections.length > 0 && (
-            <div className='w-full max-w-[600px] mt-4'>
-              <div className='w-full min-h-[70px] bg-white/70 backdrop-blur-md shadow-md border border-white/40 rounded-2xl flex items-center p-6 text-lg font-semibold text-gray-900 mb-4'>
-                My Connections ({connections.length})
-              </div>
-              <div className='w-full flex flex-col gap-4'>
-                {connections.map((user) => (
-                  <div key={user._id} className='w-full bg-white/70 backdrop-blur-sm border border-white/40 rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-between gap-4 p-4'>
-                    <div className='flex justify-center items-center gap-3 min-w-0'>
-                      <div className='w-[60px] h-[60px] rounded-full flex justify-center items-center overflow-hidden cursor-pointer ring-2 ring-gray-100 flex-shrink-0'>
-                        <img src={user.profileImage || profile} alt="" className='w-full h-full object-cover' />
-                      </div>
-                      <div className='flex flex-col min-w-0'>
-                        <div className='text-gray-900 font-semibold text-base truncate'>{`${user?.firstname || ''} ${user?.lastname || ''}`}</div>
-                        <div className='text-gray-500 text-sm truncate'>{user?.headline || ''}</div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+            {/* My Connections Section */}
+            {connections.length > 0 && (
+              <section aria-label="My connections" className="flex flex-col gap-3">
+                <div className="w-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-md shadow-sm border border-slate-200/80 dark:border-slate-800 rounded-2xl sm:rounded-3xl p-4 sm:px-6">
+                  <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white font-display">
+                    My Connections ({connections.length})
+                  </h2>
+                </div>
 
-          {/* Suggestions Section */}
-          {suggestedUsers.length > 0 && (
-            <div className='w-full max-w-[600px] mt-4'>
-              <div className='w-full min-h-[70px] bg-white/70 backdrop-blur-md shadow-md border border-white/40 rounded-2xl flex items-center p-6 text-lg font-semibold text-gray-900 mb-4'>
-                People you may know
-              </div>
-              <div className='w-full flex flex-col gap-4'>
-                {suggestedUsers.map((user) => (
-                  <div key={user._id} className='w-full bg-white/70 backdrop-blur-sm border border-white/40 rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-between gap-4 p-4'>
-                    <div className='flex justify-center items-center gap-3 min-w-0'>
-                      <div className='w-[60px] h-[60px] rounded-full flex justify-center items-center overflow-hidden cursor-pointer ring-2 ring-gray-100 flex-shrink-0'>
-                        <img src={user.profileImage || profile} alt="" className='w-full h-full object-cover' />
-                      </div>
-                      <div className='flex flex-col min-w-0'>
-                        <div className='text-gray-900 font-semibold text-base truncate'>{`${user?.firstname || ''} ${user?.lastname || ''}`}</div>
-                        <div className='text-gray-500 text-sm truncate'>{user?.headline || ''}</div>
+                <div className="flex flex-col gap-3">
+                  {connections.map((user) => (
+                    <div
+                      key={user._id}
+                      className="w-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-xs hover:shadow-md transition-all duration-200 flex items-center justify-between gap-4 p-4"
+                    >
+                      <div className="flex items-center gap-3.5 min-w-0">
+                        <Avatar
+                          src={user.profileImage || profile}
+                          name={`${user?.firstname || ''} ${user?.lastname || ''}`}
+                          size="lg"
+                        />
+                        <div className="flex flex-col min-w-0">
+                          <span className="text-slate-900 dark:text-white font-bold text-sm sm:text-base truncate">
+                            {`${user?.firstname || ''} ${user?.lastname || ''}`}
+                          </span>
+                          <span className="text-xs text-slate-500 truncate">
+                            {user?.headline || 'Connected Member'}
+                          </span>
+                        </div>
                       </div>
                     </div>
-                    <div className='flex items-center gap-2 flex-shrink-0'>
-                      <ConnectionButton userId={user._id} />
-                      <WithdrawConnectionButton userId={user._id} />
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* Suggestions Section */}
+            {suggestedUsers.length > 0 && (
+              <section aria-label="People you may know" className="flex flex-col gap-3">
+                <div className="w-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-md shadow-sm border border-slate-200/80 dark:border-slate-800 rounded-2xl sm:rounded-3xl p-4 sm:px-6">
+                  <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white font-display">
+                    People You May Know ({suggestedUsers.length})
+                  </h2>
+                </div>
+
+                <div className="flex flex-col gap-3">
+                  {suggestedUsers.map((user) => (
+                    <div
+                      key={user._id}
+                      className="w-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-xs hover:shadow-md transition-all duration-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4"
+                    >
+                      <div className="flex items-center gap-3.5 min-w-0">
+                        <Avatar
+                          src={user.profileImage || profile}
+                          name={`${user?.firstname || ''} ${user?.lastname || ''}`}
+                          size="lg"
+                        />
+                        <div className="flex flex-col min-w-0">
+                          <span className="text-slate-900 dark:text-white font-bold text-sm sm:text-base truncate">
+                            {`${user?.firstname || ''} ${user?.lastname || ''}`}
+                          </span>
+                          <span className="text-xs text-slate-500 truncate">
+                            {user?.headline || `@${user?.username || 'member'}`}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2 self-end sm:self-auto flex-shrink-0">
+                        <ConnectionButton userId={user._id} />
+                        <WithdrawConnectionButton userId={user._id} />
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </>
-      )}
+                  ))}
+                </div>
+              </section>
+            )}
+          </>
+        )}
+      </div>
     </div>
   )
 }

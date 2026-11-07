@@ -2,24 +2,28 @@ import React, { useContext, useEffect, useRef, useState, useCallback } from 'rea
 import { Link } from 'react-router-dom'
 import Nav from '../component/Nav'
 import profile from '../assets/profile.webp'
-import { FiPlus, FiFileText } from "react-icons/fi";
-import { MdOutlineCameraAlt } from "react-icons/md";
+import { FiPlus, FiFileText } from 'react-icons/fi'
+import { MdOutlineCameraAlt } from 'react-icons/md'
 import { userDatacontext } from '../context/UserContext'
-import { HiPencil } from "react-icons/hi2";
-import Editprofile from '../component/Editprofile';
-import { RxCross1 } from "react-icons/rx";
-import { FaRegImage } from "react-icons/fa6";
-import axios from 'axios';
-import { authdatacontext } from "../context/AuthContext"
-import Post from '../component/Post';
-import logger from '../utils/logger';
+import { HiPencil } from 'react-icons/hi2'
+import Editprofile from '../component/Editprofile'
+import { RxCross1 } from 'react-icons/rx'
+import { FaRegImage } from 'react-icons/fa6'
+import axios from 'axios'
+import { authdatacontext } from '../context/AuthContext'
+import Post from '../component/Post'
+import logger from '../utils/logger'
+import Avatar from '../component/ui/Avatar'
+import Button from '../component/ui/Button'
+import EmptyState from '../component/ui/EmptyState'
 
 function Home() {
-  const { userdata, edit, setedit, postdata, getPost, handleGetProfile } = useContext(userDatacontext)
+  const { userdata, edit, setedit, postdata, getPost, handleGetProfile } =
+    useContext(userDatacontext)
 
-  const [frontendImage, setfrontendImage] = useState("")
-  const [backendImage, setbackendImage] = useState("")
-  const [description, setdescription] = useState("")
+  const [frontendImage, setfrontendImage] = useState('')
+  const [backendImage, setbackendImage] = useState('')
+  const [description, setdescription] = useState('')
   const [uploadPost, setuploadPost] = useState(false)
   const { serverURL } = useContext(authdatacontext)
   const [posting, setposting] = useState(false)
@@ -39,19 +43,19 @@ function Home() {
     setposting(true)
     try {
       let formData = new FormData()
-      formData.append("description", description)
+      formData.append('description', description)
       if (backendImage) {
-        formData.append("image", backendImage)
+        formData.append('image', backendImage)
       }
 
       await axios.post(`${serverURL}/api/v1/post/createPost`, formData, { withCredentials: true })
       setuploadPost(false)
-      setdescription("")
-      setbackendImage("")
-      setfrontendImage("")
+      setdescription('')
+      setbackendImage('')
+      setfrontendImage('')
       getPost()
     } catch (error) {
-      logger.error("Error creating post:", error)
+      logger.error('Error creating post:', error)
     } finally {
       setposting(false)
     }
@@ -59,12 +63,14 @@ function Home() {
 
   const handleSuggestion = useCallback(async () => {
     try {
-      const result = await axios.get(`${serverURL}/api/v1/user/suggestedUsers`, { withCredentials: true })
+      const result = await axios.get(`${serverURL}/api/v1/user/suggestedUsers`, {
+        withCredentials: true
+      })
       if (result.data?.getSuggestedUsers) {
         setsuggestedUsers(result.data.getSuggestedUsers)
       }
     } catch (error) {
-      logger.error("Error fetching suggestions:", error)
+      logger.error('Error fetching suggestions:', error)
     }
   }, [serverURL])
 
@@ -77,186 +83,304 @@ function Home() {
   }
 
   return (
-    <div className='w-full min-h-[100vh] grid grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)_320px] gap-6 items-start relative pt-24 px-4 pb-20 sm:px-10 lg:px-12 xl:px-20 bg-transparent max-w-[1440px] mx-auto'>
+    <div className="w-full min-h-screen pt-20 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       {edit && <Editprofile />}
 
       <Nav />
 
-      {uploadPost && <div className='w-full h-full z-[100] bg-slate-900/40 backdrop-blur-sm fixed inset-0' onClick={() => setuploadPost(false)}></div>}
-
+      {/* Post Composer Modal */}
       {uploadPost && (
-        <div className='w-[90%] h-[90%] max-w-[550px] top-[10%] bg-white/90 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-white/60 rounded-3xl fixed z-[200] p-6 flex flex-col gap-4 justify-start items-start animate-in fade-in zoom-in-95 duration-200'>
-          <div className='absolute right-4 top-4'>
-            <RxCross1 className='h-5 w-5 text-gray-600 hover:text-gray-900 cursor-pointer transition-colors duration-200' onClick={() => setuploadPost(false)} />
-          </div>
-
-          <div className='flex justify-start items-center gap-3'>
-            <div className='w-[70px] h-[70px] rounded-full flex justify-center items-center overflow-hidden cursor-pointer ring-2 ring-gray-100'>
-              <img src={userdata?.profileImage || profile} alt="" className='w-full h-full object-cover' />
-            </div>
-            <div>
-              <div className='text-gray-900 font-semibold text-lg'>{`${userdata?.firstname || ''} ${userdata?.lastname || ''}`}</div>
-            </div>
-          </div>
-
-          <textarea
-            className={`w-full ${frontendImage ? "h-[200px]" : "h-[500px]"} outline-none border-none resize-none text-base text-gray-800 placeholder:text-gray-400`}
-            value={description}
-            onChange={(e) => setdescription(e.target.value)}
-            placeholder='What do you want to talk about ? '
-          ></textarea>
-
-          <input type="file" ref={image} hidden onChange={handleImage} accept="image/*" />
-
-          <div className={`w-full ${frontendImage ? "h-[300px]" : "h-[0px]"} overflow-hidden flex justify-center items-center`}>
-            {frontendImage && <img src={frontendImage} className='h-full rounded-xl object-contain' alt="" />}
-          </div>
-
-          <div className='w-full h-[200px] flex flex-col'>
-            <div className='border-b border-gray-200 p-4 flex justify-start items-center'>
-              <FaRegImage onClick={() => image.current.click()} className='h-6 w-6 text-brand hover:text-accent cursor-pointer transition-colors duration-200' />
-            </div>
-
-            <div className='p-4 flex justify-end items-center'>
-              <button 
-                className='min-w-[100px] h-12 px-6 rounded-2xl bg-brand text-white shadow-md hover:bg-brand-dark hover:shadow-lg cursor-pointer transition-all duration-200 font-medium disabled:opacity-60' 
-                disabled={posting || (!description.trim() && !backendImage)} 
-                onClick={handleuploadPost}
+        <div
+          className="w-full h-full z-[100] bg-slate-900/60 backdrop-blur-sm fixed inset-0 flex items-center justify-center p-4 overflow-y-auto animate-in fade-in duration-150"
+          onClick={() => setuploadPost(false)}
+        >
+          <div
+            className="w-full max-w-lg bg-white dark:bg-slate-900 backdrop-blur-xl shadow-2xl border border-slate-200 dark:border-slate-800 rounded-3xl p-6 flex flex-col gap-4 animate-in zoom-in-95 duration-150"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="flex justify-between items-center pb-3 border-b border-slate-100 dark:border-slate-800">
+              <h3 className="text-base font-bold text-slate-900 dark:text-white">Create a Post</h3>
+              <button
+                type="button"
+                onClick={() => setuploadPost(false)}
+                aria-label="Close dialog"
+                className="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 dark:hover:text-slate-200 cursor-pointer transition-colors"
               >
-                {posting ? "Posting..." : "Post"}
+                <RxCross1 className="h-4 w-4" />
               </button>
+            </div>
+
+            {/* Author info */}
+            <div className="flex items-center gap-3">
+              <Avatar
+                src={userdata?.profileImage || profile}
+                name={`${userdata?.firstname || ''} ${userdata?.lastname || ''}`}
+                size="lg"
+              />
+              <div className="flex flex-col">
+                <span className="text-sm font-bold text-slate-900 dark:text-white">
+                  {`${userdata?.firstname || ''} ${userdata?.lastname || ''}`}
+                </span>
+                <span className="text-xs text-slate-500 dark:text-slate-400">Post to Anyone</span>
+              </div>
+            </div>
+
+            {/* Textarea */}
+            <textarea
+              className="w-full h-36 outline-none border-none resize-none text-sm sm:text-base text-slate-800 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 bg-transparent"
+              value={description}
+              onChange={(e) => setdescription(e.target.value)}
+              placeholder="What do you want to talk about?"
+              autoFocus
+            />
+
+            <input type="file" ref={image} hidden onChange={handleImage} accept="image/*" />
+
+            {/* Image Preview */}
+            {frontendImage && (
+              <div className="relative rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 max-h-64 flex justify-center bg-slate-50 dark:bg-slate-800/50">
+                <img
+                  src={frontendImage}
+                  className="max-h-64 w-full object-contain"
+                  alt="Post preview"
+                />
+                <button
+                  type="button"
+                  aria-label="Remove image"
+                  onClick={() => {
+                    setfrontendImage('')
+                    setbackendImage('')
+                  }}
+                  className="absolute top-2 right-2 w-8 h-8 rounded-full bg-slate-900/70 text-white flex items-center justify-center hover:bg-slate-900 transition-colors cursor-pointer"
+                >
+                  <RxCross1 className="w-4 h-4" />
+                </button>
+              </div>
+            )}
+
+            {/* Footer controls */}
+            <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+              <button
+                type="button"
+                onClick={() => image.current.click()}
+                className="inline-flex items-center gap-2 px-3 py-2 rounded-xl text-brand hover:bg-brand-light dark:hover:bg-blue-950/40 text-xs sm:text-sm font-semibold transition-colors cursor-pointer"
+              >
+                <FaRegImage className="w-5 h-5" />
+                <span>Add media</span>
+              </button>
+
+              <Button
+                variant="primary"
+                size="md"
+                disabled={posting || (!description.trim() && !backendImage)}
+                loading={posting}
+                loadingText="Posting..."
+                onClick={handleuploadPost}
+                className="px-6 font-semibold"
+              >
+                Post
+              </Button>
             </div>
           </div>
         </div>
       )}
 
-      {/* LEFT COLUMN (Profile Rail) */}
-      <div className='w-full hidden lg:flex flex-col gap-6 sticky top-24 self-start'>
-        <div className='rounded-3xl w-full bg-white/70 backdrop-blur-md shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-white/60 relative overflow-hidden transition-all hover:bg-white/80 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] duration-300'>
-          <div className='w-full h-[84px] bg-gradient-to-r from-brand to-accent rounded-t-3xl overflow-hidden flex items-center justify-center cursor-pointer relative'>
-            {userdata?.coverImage && <img src={userdata.coverImage} alt="" className='w-full h-full object-cover opacity-90' />}
-            <MdOutlineCameraAlt className='absolute top-3 right-3 h-5 w-5 text-white drop-shadow-md' onClick={() => setedit(true)} />
-          </div>
-
-          <div className='w-[72px] h-[72px] rounded-full flex justify-center items-center overflow-hidden absolute top-[48px] left-5 cursor-pointer ring-4 ring-white/80 bg-white shadow-sm'>
-            <img src={userdata?.profileImage || profile} alt="" className='w-full h-full object-cover' />
-          </div>
-
-          <div className='w-6 h-6 bg-brand cursor-pointer absolute top-[92px] left-[65px] rounded-full flex justify-center items-center shadow-md ring-2 ring-white hover:bg-brand-dark transition-colors duration-200'>
-            <FiPlus className='text-white w-3.5 h-3.5' onClick={() => setedit(true)} />
-          </div>
-
-          <div className='mt-11 p-5 pt-0 flex flex-col'>
-            <div className='text-gray-900 font-bold text-lg truncate'>{`${userdata?.firstname || ''} ${userdata?.lastname || ''}`}</div>
-            <div className='text-xs text-gray-500 mt-1 font-medium line-clamp-2'>{userdata?.headline || ''}</div>
-            <div className='text-[11px] text-gray-400 mt-1 uppercase tracking-wider font-semibold truncate'>{userdata?.location || ''}</div>
-
-            <div className='flex items-center justify-start mt-5'>
-              <button className='w-full h-9 rounded-xl bg-white/60 text-gray-900 border border-white/60 shadow-sm hover:bg-white hover:shadow-md flex justify-center items-center gap-2 text-sm font-medium transition-all duration-200 cursor-pointer' onClick={() => setedit(true)}>
-                Edit profile <HiPencil className='w-3.5 h-3.5' />
+      {/* Main 3-Column Grid Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)_320px] gap-6 items-start">
+        {/* LEFT COLUMN: Profile rail */}
+        <aside aria-label="Profile summary" className="w-full hidden lg:flex flex-col gap-6 sticky top-24">
+          <div className="rounded-3xl w-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-md shadow-sm border border-slate-200/80 dark:border-slate-800 overflow-hidden transition-all hover:shadow-md duration-200">
+            {/* Banner */}
+            <div className="w-full h-24 bg-gradient-to-r from-brand to-accent relative overflow-hidden flex items-center justify-center">
+              {userdata?.coverImage && (
+                <img
+                  src={userdata.coverImage}
+                  alt="Cover banner"
+                  className="w-full h-full object-cover opacity-90"
+                />
+              )}
+              <button
+                type="button"
+                aria-label="Edit cover photo"
+                onClick={() => setedit(true)}
+                className="absolute top-2.5 right-2.5 w-7 h-7 rounded-full bg-slate-900/50 backdrop-blur-xs flex items-center justify-center text-white hover:bg-slate-900/80 transition-colors cursor-pointer"
+              >
+                <MdOutlineCameraAlt className="w-4 h-4" />
               </button>
             </div>
-          </div>
-        </div>
-      </div>
 
-      {/* CENTER COLUMN (Feed) */}
-      <div className='w-full min-h-[200px] bg-transparent flex flex-col gap-6'>
-        {/* POST BOX */}
-        <div className='w-full bg-white/70 backdrop-blur-md shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-white/60 rounded-3xl p-5 flex items-center gap-4 hover:bg-white/80 transition-all duration-300'>
-          <div className='w-12 h-12 rounded-full overflow-hidden cursor-pointer ring-2 ring-white/60 shadow-sm flex-shrink-0'>
-            <img src={userdata?.profileImage || profile} alt="" className='w-full h-full object-cover' />
-          </div>
-          <div
-            onClick={() => setuploadPost(true)}
-            className='flex-1 border border-white/80 bg-white/50 rounded-2xl px-5 py-3.5 text-[15px] text-gray-500 cursor-pointer hover:bg-white/80 hover:shadow-sm transition-all duration-200'
-          >
-            Share something...
-          </div>
-        </div>
-
-        {/* POSTS */}
-        {postdata.length > 0 ? (
-          postdata.map((post) => (
-            <Post
-              key={post._id}
-              id={post._id}
-              description={post.description}
-              author={post.author}
-              image={post.image}
-              like={post.likes}
-              comment={post.comments}
-              createdAt={post.createdAt}
-            />
-          ))
-        ) : (
-          <div className='w-full bg-white/70 backdrop-blur-md shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-white/60 rounded-3xl flex flex-col items-center justify-center p-10 text-center gap-4 hover:bg-white/80 transition-all duration-300'>
-            <div className='w-16 h-16 rounded-full bg-brand-light flex items-center justify-center text-brand shadow-sm border border-brand-light/50'>
-              <FiFileText className='w-8 h-8' />
-            </div>
-            <div>
-              <h3 className='text-lg font-bold text-gray-900 mb-1'>Feed is empty</h3>
-              <p className='text-sm text-gray-500 max-w-sm'>
-                No posts to show right now. Share something with the community or check back later!
-              </p>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* RIGHT COLUMN (Suggestions & Footer) */}
-      <div className='w-full hidden lg:flex flex-col gap-6 sticky top-24 self-start'>
-        {/* SUGGESTIONS CARD */}
-        <div className='w-full min-h-[200px] bg-white/70 backdrop-blur-md border border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.08)] rounded-3xl flex flex-col hover:bg-white/80 transition-all duration-300'>
-          <div className='p-6'>
-            {suggestedUsers.length > 0 && (
-              <div className='mb-5 text-gray-900 font-bold text-[15px] px-1 uppercase tracking-wider'>
-                People you may know
+            {/* Profile Content Container in Normal Flow */}
+            <div className="px-5 pb-5 flex flex-col">
+              {/* Avatar in normal flow pulled up over banner */}
+              <div className="relative -mt-10 mb-3.5 w-fit">
+                <Avatar
+                  src={userdata?.profileImage || profile}
+                  name={`${userdata?.firstname || ''} ${userdata?.lastname || ''}`}
+                  size="xl"
+                  ring={true}
+                  className="ring-4 ring-white dark:ring-slate-900 shadow-md"
+                  onClick={() => setedit(true)}
+                />
+                <button
+                  type="button"
+                  aria-label="Edit profile picture"
+                  onClick={() => setedit(true)}
+                  className="w-6 h-6 bg-brand hover:bg-brand-dark cursor-pointer absolute bottom-0 right-0 rounded-full flex justify-center items-center text-white shadow-sm ring-2 ring-white dark:ring-slate-900 transition-colors duration-150"
+                >
+                  <FiPlus className="w-3.5 h-3.5" />
+                </button>
               </div>
-            )}
-            <div className='flex flex-col gap-3'>
-              {suggestedUsers.length > 0 ? (
+
+              {/* Profile Details ALWAYS below Avatar */}
+              <div className="flex flex-col gap-0.5">
+                <span className="text-slate-900 dark:text-white font-bold text-base sm:text-lg truncate leading-snug">
+                  {`${userdata?.firstname || ''} ${userdata?.lastname || ''}`}
+                </span>
+                <span className="text-xs text-slate-500 dark:text-slate-400 font-medium line-clamp-2 leading-relaxed">
+                  {userdata?.headline || 'Member at ConnectHub'}
+                </span>
+                {userdata?.location && (
+                  <span className="text-[11px] text-slate-400 dark:text-slate-500 font-semibold uppercase tracking-wider mt-1 truncate">
+                    {userdata.location}
+                  </span>
+                )}
+              </div>
+
+              <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800">
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  className="w-full font-semibold"
+                  onClick={() => setedit(true)}
+                >
+                  <span>Edit profile</span>
+                  <HiPencil className="w-3.5 h-3.5 ml-1" />
+                </Button>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        {/* CENTER COLUMN: Feed */}
+        <main aria-label="Main Feed" className="w-full flex flex-col gap-5 min-w-0">
+          {/* Post Composer Trigger Card */}
+          <div className="w-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-md shadow-sm border border-slate-200/80 dark:border-slate-800 rounded-2xl sm:rounded-3xl p-4 sm:p-5 flex items-center gap-3.5 transition-all duration-200 hover:shadow-md">
+            <Avatar
+              src={userdata?.profileImage || profile}
+              name={`${userdata?.firstname || ''} ${userdata?.lastname || ''}`}
+              size="md"
+            />
+            <button
+              type="button"
+              onClick={() => setuploadPost(true)}
+              className="flex-1 text-left bg-slate-100/90 dark:bg-slate-800/90 hover:bg-slate-200/80 dark:hover:bg-slate-800 rounded-full px-4 sm:px-5 py-3 text-xs sm:text-sm text-slate-500 dark:text-slate-400 border border-transparent transition-all duration-150 cursor-pointer select-none"
+            >
+              Share something with your network...
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setuploadPost(true)
+                setTimeout(() => image.current?.click(), 100)
+              }}
+              aria-label="Upload photo"
+              className="p-2 text-slate-500 dark:text-slate-400 hover:text-brand dark:hover:text-brand rounded-xl hover:bg-brand-light dark:hover:bg-blue-950/40 transition-colors cursor-pointer"
+            >
+              <FaRegImage className="w-5 h-5" />
+            </button>
+          </div>
+
+          {/* Posts Feed */}
+          {postdata && postdata.length > 0 ? (
+            postdata.map((post) => (
+              <Post
+                key={post._id}
+                id={post._id}
+                description={post.description}
+                author={post.author}
+                image={post.image}
+                like={post.likes}
+                comment={post.comments}
+                createdAt={post.createdAt}
+              />
+            ))
+          ) : (
+            <EmptyState
+              icon={FiFileText}
+              title="Feed is empty"
+              description="No posts to show right now. Share something with the community or check back later!"
+              action={
+                <Button variant="primary" size="sm" onClick={() => setuploadPost(true)}>
+                  Create first post
+                </Button>
+              }
+            />
+          )}
+        </main>
+
+        {/* RIGHT COLUMN: Suggestions & Footer */}
+        <aside aria-label="Suggested members" className="w-full hidden lg:flex flex-col gap-6 sticky top-24">
+          <div className="w-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/80 dark:border-slate-800 shadow-sm rounded-3xl p-5 transition-all hover:shadow-md duration-200">
+            <div className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider mb-3 px-1">
+              People you may know
+            </div>
+
+            <div className="flex flex-col gap-2">
+              {suggestedUsers && suggestedUsers.length > 0 ? (
                 suggestedUsers.map((user) => (
-                  <div 
-                    key={user._id} 
-                    className='flex rounded-2xl items-center gap-4 p-3 cursor-pointer hover:bg-white/60 hover:shadow-sm border border-transparent hover:border-white/80 transition-all duration-200 group' 
+                  <div
+                    key={user._id}
+                    className="flex items-center gap-3 p-2.5 rounded-2xl hover:bg-slate-100/80 dark:hover:bg-slate-800/80 cursor-pointer transition-colors duration-150 group"
                     onClick={() => handleGetProfile(user?.username)}
                   >
-                    <div className='w-12 h-12 rounded-full overflow-hidden ring-2 ring-white/60 shadow-sm flex-shrink-0 group-hover:ring-brand transition-colors'>
-                      <img src={user.profileImage || profile} alt="" className='w-full h-full object-cover' />
-                    </div>
-                    <div className='flex flex-col items-start justify-center min-w-0'>
-                      <div className='text-gray-900 font-semibold text-[15px] truncate w-full'>
+                    <Avatar
+                      src={user.profileImage || profile}
+                      name={`${user?.firstname || ''} ${user?.lastname || ''}`}
+                      size="md"
+                    />
+                    <div className="flex flex-col min-w-0 flex-1">
+                      <span className="text-sm font-semibold text-slate-900 dark:text-white truncate group-hover:text-brand transition-colors">
                         {`${user?.firstname || ''} ${user?.lastname || ''}`}
-                      </div>
-                      <div className='text-[13px] text-gray-500 truncate w-full'>
-                        {user?.headline || ''}
-                      </div>
+                      </span>
+                      <span className="text-xs text-slate-500 dark:text-slate-400 truncate">
+                        {user?.headline || `@${user?.username || 'member'}`}
+                      </span>
                     </div>
                   </div>
                 ))
               ) : (
-                <div className='text-sm text-gray-400 text-center py-4'>No suggestions right now</div>
+                <div className="text-xs text-slate-400 dark:text-slate-500 text-center py-4">
+                  No suggestions available right now
+                </div>
               )}
             </div>
           </div>
-        </div>
 
-        {/* FOOTER */}
-        <div className='px-2 flex flex-col items-center text-center gap-2 text-xs text-gray-400'>
-          <div className='flex flex-wrap justify-center gap-x-2 gap-y-1 leading-relaxed'>
-            <Link to="/about" className='hover:underline hover:text-gray-600 transition-colors'>About</Link>
-            <span>·</span>
-            <Link to="/accessibility" className='hover:underline hover:text-gray-600 transition-colors'>Accessibility</Link>
-            <span>·</span>
-            <Link to="/help" className='hover:underline hover:text-gray-600 transition-colors'>Help Center</Link>
-            <span>·</span>
-            <Link to="/privacy" className='hover:underline hover:text-gray-600 transition-colors'>Privacy & Terms</Link>
-          </div>
-          <div className='text-[11px] text-gray-400 mt-1'>
-            ConnectHub Corporation © 2026
-          </div>
-        </div>
+          {/* Quick Footer Links */}
+          <footer className="px-2 flex flex-col items-center text-center gap-2 text-xs text-slate-400 dark:text-slate-500">
+            <div className="flex flex-wrap justify-center gap-x-2.5 gap-y-1 font-medium">
+              <Link to="/about" className="hover:text-brand transition-colors">
+                About
+              </Link>
+              <span>·</span>
+              <Link to="/accessibility" className="hover:text-brand transition-colors">
+                Accessibility
+              </Link>
+              <span>·</span>
+              <Link to="/help" className="hover:text-brand transition-colors">
+                Help
+              </Link>
+              <span>·</span>
+              <Link to="/privacy" className="hover:text-brand transition-colors">
+                Privacy
+              </Link>
+            </div>
+            <span className="text-[11px] text-slate-400 dark:text-slate-500 mt-0.5">
+              ConnectHub © {new Date().getFullYear()}
+            </span>
+          </footer>
+        </aside>
       </div>
     </div>
   )
